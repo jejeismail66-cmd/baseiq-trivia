@@ -4,20 +4,5 @@
       "source": "/.well-known/farcaster.json",
       "destination": "/farcaster.json"
     }
-  ],
-  "headers": [
-    {
-      "source": "/farcaster.json",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/json"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        }
-      ]
-    }
   ]
 }
