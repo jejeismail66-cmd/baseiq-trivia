@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/.well-known/farcaster.json",
-      "destination": "/frontend/well-known/farcaster.json"
+      "destination": "/well-known/farcaster.json"
     }
   ]
 }
