@@ -1,8 +1,8 @@
 {
   "accountAssociation": {
-    "header": "eyJmaWQiOjEsInR5cGUiOiJjdXN0b2R5IiwibmV0d29yayI6Im9wdGltaXNtIn0",
+    "header": "eyJmaWQiOjE5MDkyNTksInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHhBMjFmOEMyRDcwZDY0MGUxNThDYzlFQjhBNzdCOTNENDVCNEQ1MjI4In0",
     "payload": "eyJkb21haW4iOiJiYXNlaXEtdHJpdmlhLnZlcmNlbC5hcHAifQ",
-    "signature": "placeholder-replace-with-real-signature"
+    "signature": "n54wsQEnu+OeYXjvU6HI8J1NEwF/pMV7yV5tyYYh73QBdi4LcRzldtfM+IF8alelxPZ0QpTc3tP3Vs2SPOqkxBw="
   },
   "frame": {
     "version": "1",
@@ -10,6 +10,7 @@
     "iconUrl": "https://baseiq-trivia.vercel.app/og-image.svg",
     "homeUrl": "https://baseiq-trivia.vercel.app",
     "imageUrl": "https://baseiq-trivia.vercel.app/og-image.svg",
+    "buttonTitle": "Play BaseIQ",
     "splashImageUrl": "https://baseiq-trivia.vercel.app/og-image.svg",
     "splashBackgroundColor": "#060910",
     "webhookUrl": "https://baseiq-trivia.vercel.app"
