@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#060910"/>
+      <stop offset="100%" style="stop-color:#0d1421"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0052ff"/>
+      <stop offset="100%" style="stop-color:#00d4ff"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f5c542"/>
+      <stop offset="100%" style="stop-color:#e5a820"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Grid lines -->
+
+  <g opacity="0.04" stroke="#0052ff" stroke-width="1">
+    <line x1="0" y1="63" x2="1200" y2="63"/>
+    <line x1="0" y1="126" x2="1200" y2="126"/>
+    <line x1="0" y1="189" x2="1200" y2="189"/>
+    <line x1="0" y1="252" x2="1200" y2="252"/>
+    <line x1="0" y1="315" x2="1200" y2="315"/>
+    <line x1="0" y1="378" x2="1200" y2="378"/>
+    <line x1="0" y1="441" x2="1200" y2="441"/>
+    <line x1="0" y1="504" x2="1200" y2="504"/>
+    <line x1="0" y1="567" x2="1200" y2="567"/>
+    <line x1="120" y1="0" x2="120" y2="630"/>
+    <line x1="240" y1="0" x2="240" y2="630"/>
+    <line x1="360" y1="0" x2="360" y2="630"/>
+    <line x1="480" y1="0" x2="480" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="720" y1="0" x2="720" y2="630"/>
+    <line x1="840" y1="0" x2="840" y2="630"/>
+    <line x1="960" y1="0" x2="960" y2="630"/>
+    <line x1="1080" y1="0" x2="1080" y2="630"/>
+  </g>
+
+  <!-- Glow orbs -->
+
+  <circle cx="200" cy="150" r="200" fill="#0052ff" opacity="0.08" filter="url(#glow)"/>
+  <circle cx="1000" cy="480" r="160" fill="#00d4ff" opacity="0.06" filter="url(#glow)"/>
+  <circle cx="900" cy="150" r="120" fill="#f5c542" opacity="0.05" filter="url(#glow)"/>
+
+  <!-- Network nodes -->
+
+  <circle cx="100" cy="100" r="4" fill="#0052ff" opacity="0.6"/>
+  <circle cx="300" cy="80" r="3" fill="#00d4ff" opacity="0.5"/>
+  <circle cx="900" cy="500" r="4" fill="#f5c542" opacity="0.6"/>
+  <circle cx="1100" cy="150" r="3" fill="#0052ff" opacity="0.5"/>
+  <circle cx="1050" cy="400" r="5" fill="#00d4ff" opacity="0.4"/>
+  <circle cx="150" cy="450" r="3" fill="#f5c542" opacity="0.5"/>
+  <line x1="100" y1="100" x2="300" y2="80" stroke="#0052ff" stroke-width="1" opacity="0.2"/>
+  <line x1="1100" y1="150" x2="1050" y2="400" stroke="#0052ff" stroke-width="1" opacity="0.2"/>
+  <line x1="900" y1="500" x2="1050" y2="400" stroke="#00d4ff" stroke-width="1" opacity="0.2"/>
+
+  <!-- Border -->
+
+  <rect x="2" y="2" width="1196" height="626" fill="none" stroke="#1e2d45" stroke-width="2" rx="0"/>
+
+  <!-- Left accent bar -->
+
+  <rect x="0" y="0" width="6" height="630" fill="url(#blue)"/>
+
+  <!-- Logo area -->
+
+<text x="80" y="120" font-family="Arial Black, sans-serif" font-size="52" font-weight="900" fill="url(#blue)">Base</text>
+<text x="222" y="120" font-family="Arial Black, sans-serif" font-size="52" font-weight="900" fill="#f5c542">IQ</text>
+
+  <!-- Badge -->
+
+  <rect x="80" y="138" width="180" height="32" rx="16" fill="rgba(0,82,255,0.2)" stroke="#0052ff" stroke-width="1" opacity="0.6"/>
+  <text x="170" y="159" font-family="Arial, sans-serif" font-size="13" fill="#00d4ff" text-anchor="middle" font-weight="700" letter-spacing="2">⚡ ON BASE NETWORK</text>
+
+  <!-- Main headline -->
+
+<text x="80" y="270" font-family="Arial Black, sans-serif" font-size="72" font-weight="900" fill="#e8f0ff" letter-spacing="-2">Prove Your IQ.</text>
+<text x="80" y="360" font-family="Arial Black, sans-serif" font-size="72" font-weight="900" fill="url(#gold)" letter-spacing="-2">Win Real USDC.</text>
+
+  <!-- Subtext -->
+
+<text x="80" y="420" font-family="Arial, sans-serif" font-size="26" fill="#5a7090">Answer crypto trivia faster than everyone else.</text>
+<text x="80" y="455" font-family="Arial, sans-serif" font-size="26" fill="#5a7090">Top 3 players split the USDC prize pool every round.</text>
+
+  <!-- Stats -->
+
+  <rect x="80" y="500" width="180" height="80" rx="12" fill="#0d1421" stroke="#1e2d45" stroke-width="1"/>
+  <text x="170" y="535" font-family="Arial, sans-serif" font-size="13" fill="#5a7090" text-anchor="middle" font-weight="700" letter-spacing="1">PLAYERS</text>
+  <text x="170" y="568" font-family="Arial Black, sans-serif" font-size="28" fill="#00d4ff" text-anchor="middle" font-weight="900">1,204</text>
+
+  <rect x="280" y="500" width="180" height="80" rx="12" fill="#0d1421" stroke="#1e2d45" stroke-width="1"/>
+  <text x="370" y="535" font-family="Arial, sans-serif" font-size="13" fill="#5a7090" text-anchor="middle" font-weight="700" letter-spacing="1">PAID OUT</text>
+  <text x="370" y="568" font-family="Arial Black, sans-serif" font-size="28" fill="#f5c542" text-anchor="middle" font-weight="900">$4,820</text>
+
+  <rect x="480" y="500" width="180" height="80" rx="12" fill="#0d1421" stroke="#1e2d45" stroke-width="1"/>
+  <text x="570" y="535" font-family="Arial, sans-serif" font-size="13" fill="#5a7090" text-anchor="middle" font-weight="700" letter-spacing="1">ROUNDS TODAY</text>
+  <text x="570" y="568" font-family="Arial Black, sans-serif" font-size="28" fill="#00e676" text-anchor="middle" font-weight="900">38</text>
+
+  <!-- Right side - game preview -->
+
+  <rect x="780" y="200" width="360" height="280" rx="16" fill="#0d1421" stroke="#1e2d45" stroke-width="1.5"/>
+  <rect x="780" y="200" width="360" height="280" rx="16" fill="none" stroke="url(#blue)" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Question box header -->
+
+<text x="810" y="235" font-family="Arial, sans-serif" font-size="11" fill="#00d4ff" font-weight="700" letter-spacing="2">CRYPTO</text>
+<text x="810" y="268" font-family="Arial, sans-serif" font-size="18" fill="#e8f0ff" font-weight="700">What consensus mechanism</text>
+<text x="810" y="292" font-family="Arial, sans-serif" font-size="18" fill="#e8f0ff" font-weight="700">does Ethereum use?</text>
+
+  <!-- Answer options -->
+
+  <rect x="810" y="312" width="150" height="40" rx="8" fill="#111c2e" stroke="#1e2d45" stroke-width="1"/>
+  <text x="885" y="337" font-family="Arial, sans-serif" font-size="13" fill="#e8f0ff" text-anchor="middle">Proof of Work</text>
+
+  <rect x="970" y="312" width="150" height="40" rx="8" fill="rgba(0,230,118,0.15)" stroke="#00e676" stroke-width="1.5"/>
+  <text x="1045" y="337" font-family="Arial, sans-serif" font-size="13" fill="#00e676" text-anchor="middle" font-weight="700">✓ Proof of Stake</text>
+
+  <rect x="810" y="362" width="150" height="40" rx="8" fill="#111c2e" stroke="#1e2d45" stroke-width="1"/>
+  <text x="885" y="387" font-family="Arial, sans-serif" font-size="13" fill="#e8f0ff" text-anchor="middle">Proof of Authority</text>
+
+  <rect x="970" y="362" width="150" height="40" rx="8" fill="#111c2e" stroke="#1e2d45" stroke-width="1"/>
+  <text x="1045" y="387" font-family="Arial, sans-serif" font-size="13" fill="#e8f0ff" text-anchor="middle">Delegated PoS</text>
+
+  <!-- Prize pool -->
+
+  <rect x="810" y="418" width="310" height="44" rx="10" fill="rgba(245,197,66,0.1)" stroke="rgba(245,197,66,0.3)" stroke-width="1"/>
+  <text x="900" y="445" font-family="Arial, sans-serif" font-size="14" fill="#f5c542" text-anchor="middle">🏆 Prize Pool</text>
+  <text x="1020" y="445" font-family="Arial Black, sans-serif" font-size="18" fill="#f5c542" font-weight="900">250 USDC</text>
+
+  <!-- URL -->
+
+<text x="600" y="610" font-family="Arial, sans-serif" font-size="20" fill="#1e2d45" text-anchor="middle" font-weight="700">baseiq-trivia.vercel.app</text>
+</svg>
