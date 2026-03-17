@@ -12,7 +12,6 @@
     "imageUrl": "https://baseiq-trivia.vercel.app/og-image.svg",
     "buttonTitle": "🎮 Play BaseIQ",
     "splashImageUrl": "https://baseiq-trivia.vercel.app/og-image.svg",
-    "splashBackgroundColor": "#060910",
-    "webhookUrl": ""
+    "splashBackgroundColor": "#060910"
   }
 }
