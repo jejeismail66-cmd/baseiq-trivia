@@ -21,17 +21,39 @@
 <!-- Farcaster ready — no external scripts -->
 
 <script>
-window.__fcReady = function() {
-  try {
-    if (window.FrameSDK) { window.FrameSDK.actions.ready({}); return; }
-    if (window.sdk && window.sdk.actions) { window.sdk.actions.ready({}); return; }
-    if (window.farcaster) { window.farcaster.sdk && window.farcaster.sdk.actions.ready({}); return; }
-    if (window.ReactNativeWebView) { window.ReactNativeWebView.postMessage(JSON.stringify({type:'frameReady'})); }
-  } catch(e) {}
-};
-document.addEventListener('DOMContentLoaded', window.__fcReady);
-window.addEventListener('load', window.__fcReady);
-setTimeout(window.__fcReady, 800);
+// Signal ready immediately and repeatedly until Warpcast responds
+(function() {
+  var attempts = 0;
+  function ready() {
+    attempts++;
+    try {
+      // Method 1: Official SDK
+      if (window.sdk && typeof window.sdk.actions === 'object') {
+        window.sdk.actions.ready(); return;
+      }
+      // Method 2: Frame SDK
+      if (window.FrameSDK && window.FrameSDK.actions) {
+        window.FrameSDK.actions.ready(); return;
+      }
+      // Method 3: React Native WebView (Warpcast mobile)
+      if (window.ReactNativeWebView) {
+        window.ReactNativeWebView.postMessage(JSON.stringify({
+          type: 'frameReady',
+          id: 1
+        }));
+        return;
+      }
+      // Method 4: postMessage to parent
+      window.parent.postMessage({ type: 'frameReady' }, '*');
+    } catch(e) {}
+    // Keep trying for 5 seconds
+    if (attempts < 10) setTimeout(ready, 500);
+  }
+  // Fire immediately + on every load event
+  ready();
+  document.addEventListener('DOMContentLoaded', ready);
+  window.addEventListener('load', ready);
+})();
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
