@@ -1,0 +1,17 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEsInR5cGUiOiJjdXN0b2R5IiwibmV0d29yayI6Im9wdGltaXNtIn0",
+    "payload": "eyJkb21haW4iOiJiYXNlaXEtdHJpdmlhLnZlcmNlbC5hcHAifQ",
+    "signature": "placeholder-replace-with-real-signature"
+  },
+  "frame": {
+    "version": "1",
+    "name": "BaseIQ Trivia",
+    "iconUrl": "https://baseiq-trivia.vercel.app/og-image.svg",
+    "homeUrl": "https://baseiq-trivia.vercel.app",
+    "imageUrl": "https://baseiq-trivia.vercel.app/og-image.svg",
+    "splashImageUrl": "https://baseiq-trivia.vercel.app/og-image.svg",
+    "splashBackgroundColor": "#060910",
+    "webhookUrl": "https://baseiq-trivia.vercel.app"
+  }
+}
