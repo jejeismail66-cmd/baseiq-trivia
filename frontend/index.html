@@ -20,33 +20,58 @@
 <meta property="og:url" content="https://baseiq-trivia.vercel.app" />
 <meta property="og:type" content="website" />
 
-<!-- Farcaster Mini App SDK — official package -->
-
-<script src="https://unpkg.com/@farcaster/miniapp-sdk@latest/dist/index.umd.js" crossorigin="anonymous" onerror="window.__sdkFailed=true"></script>
+<!-- Farcaster Mini App SDK — fully inlined postMessage bridge -->
 
 <script>
 (function() {
-  function callReady() {
+  // Implements the postMessage protocol Warpcast uses to communicate with mini apps
+  var isReady = false;
+
+  function sendMessage(msg) {
     try {
-      // Official export name is 'sdk' from @farcaster/miniapp-sdk
-      if (window.sdk && window.sdk.actions && typeof window.sdk.actions.ready === 'function') {
-        window.sdk.actions.ready();
-        console.log('ready() called via window.sdk');
-        return true;
+      var str = JSON.stringify(msg);
+      // React Native WebView (Warpcast mobile app)
+      if (window.ReactNativeWebView) {
+        window.ReactNativeWebView.postMessage(str);
+        return;
       }
-    } catch(e) { console.log('ready error:', e); }
-    return false;
+      // Iframe / web fallback
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage(str, '*');
+        return;
+      }
+      window.postMessage(str, '*');
+    } catch(e) {}
   }
 
-  // Try immediately, then keep retrying for 3 seconds
-  var interval = setInterval(function() {
-    if (callReady()) clearInterval(interval);
-  }, 200);
-  setTimeout(function() { clearInterval(interval); }, 3000);
+  function ready() {
+    if (isReady) return;
+    isReady = true;
+    // Official Farcaster ready message format
+    sendMessage({ method: 'ready', params: {} });
+    sendMessage({ type: 'frameReady' });
+    sendMessage({ event: 'ready' });
+    sendMessage({ jsonrpc: '2.0', id: 1, method: 'fc_ready', params: {} });
+  }
 
-  // Also try on load events
-  document.addEventListener('DOMContentLoaded', callReady);
-  window.addEventListener('load', callReady);
+  // Expose as window.sdk for any code that calls sdk.actions.ready()
+  window.sdk = {
+    actions: {
+      ready: ready,
+      openUrl: function(url) { sendMessage({ method: 'openUrl', params: { url: url } }); },
+      close: function() { sendMessage({ method: 'close', params: {} }); }
+    },
+    context: {}
+  };
+
+  // Fire ready at every possible point
+  ready();
+  document.addEventListener('DOMContentLoaded', ready);
+  window.addEventListener('load', ready);
+  setTimeout(ready, 100);
+  setTimeout(ready, 500);
+  setTimeout(ready, 1000);
+  setTimeout(ready, 2000);
 })();
 </script>
 
