@@ -18,33 +18,20 @@
 <meta property="og:url" content="https://baseiq-trivia.vercel.app" />
 <meta property="og:type" content="website" />
 
-<!-- Farcaster Mini App SDK — inline stub (no external CDN errors) -->
+<!-- Farcaster ready — no external scripts -->
 
 <script>
-(function() {
-  // Try to signal ready to Farcaster as soon as possible
-  function tryReady() {
-    try {
-      if (window.sdk && window.sdk.actions && window.sdk.actions.ready) {
-        window.sdk.actions.ready(); return;
-      }
-      if (window.MiniAppSdk && window.MiniAppSdk.actions) {
-        window.MiniAppSdk.actions.ready(); return;
-      }
-      if (window.farcaster && window.farcaster.sdk) {
-        window.farcaster.sdk.actions.ready(); return;
-      }
-      // Post message fallback for Warpcast webview
-      if (window.parent !== window) {
-        window.parent.postMessage({ type: 'frameReady' }, '*');
-      }
-    } catch(e) {}
-  }
-  document.addEventListener('DOMContentLoaded', tryReady);
-  window.addEventListener('load', tryReady);
-  setTimeout(tryReady, 300);
-  setTimeout(tryReady, 1000);
-})();
+window.__fcReady = function() {
+  try {
+    if (window.FrameSDK) { window.FrameSDK.actions.ready({}); return; }
+    if (window.sdk && window.sdk.actions) { window.sdk.actions.ready({}); return; }
+    if (window.farcaster) { window.farcaster.sdk && window.farcaster.sdk.actions.ready({}); return; }
+    if (window.ReactNativeWebView) { window.ReactNativeWebView.postMessage(JSON.stringify({type:'frameReady'})); }
+  } catch(e) {}
+};
+document.addEventListener('DOMContentLoaded', window.__fcReady);
+window.addEventListener('load', window.__fcReady);
+setTimeout(window.__fcReady, 800);
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
@@ -371,9 +358,10 @@ cursor:pointer; transition:all 0.2s; box-shadow:var(–glow);
 
 /* –– WALLET MODALS –– */
 .modal-overlay {
-position:fixed; inset:0; z-index:200;
-background:rgba(0,0,0,0.7);
+position:fixed; inset:0; z-index:9999;
+background:rgba(0,0,0,0.8);
 backdrop-filter:blur(8px);
+-webkit-backdrop-filter:blur(8px);
 display:flex; align-items:flex-end; justify-content:center;
 opacity:0; pointer-events:none;
 transition:opacity 0.3s;
