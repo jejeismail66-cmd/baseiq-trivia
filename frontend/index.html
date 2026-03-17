@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
 <title>BaseIQ — On-Chain Trivia</title>
 
 <!-- Farcaster Mini App Meta Tag (current standard) -->
@@ -69,11 +69,19 @@
 
 - { margin:0; padding:0; box-sizing:border-box; }
 
+html {
+width: 100%;
+height: 100%;
+overflow: hidden;
+}
+
 body {
 font-family: ‘Syne’, sans-serif;
 background: var(–bg);
 color: var(–text);
+width: 100%;
 min-height: 100vh;
+min-height: -webkit-fill-available;
 overflow-x: hidden;
 }
 
