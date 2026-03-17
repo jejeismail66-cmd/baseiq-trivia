@@ -1,26 +1,23 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>BaseIQ — On-Chain Trivia</title>
 
-<!-- Farcaster Mini App Meta Tags -->
-<meta property="fc:frame" content="vNext" />
-<meta property="fc:frame:image" content="https://baseiq-trivia.vercel.app/og-image.png" />
-<meta property="fc:frame:button:1" content="🎮 Play BaseIQ" />
-<meta property="fc:frame:button:1:action" content="link" />
-<meta property="fc:frame:button:1:target" content="https://baseiq-trivia.vercel.app" />
+<!-- Farcaster Mini App Meta Tag (single JSON tag — required format) -->
+
+<meta name="fc:frame" content='{"version":"next","imageUrl":"https://baseiq-trivia.vercel.app/og-image.png","button":{"title":"🎮 Play BaseIQ","action":{"type":"launch_frame","name":"BaseIQ Trivia","url":"https://baseiq-trivia.vercel.app","splashImageUrl":"https://baseiq-trivia.vercel.app/og-image.png","splashBackgroundColor":"#060910"}}}' />
 
 <!-- Open Graph for social sharing -->
+
 <meta property="og:title" content="BaseIQ — Win USDC Playing Trivia on Base" />
 <meta property="og:description" content="Answer crypto & general knowledge questions faster than everyone else. Top 3 players split the USDC prize pool every round." />
 <meta property="og:image" content="https://baseiq-trivia.vercel.app/og-image.png" />
 <meta property="og:url" content="https://baseiq-trivia.vercel.app" />
 <meta property="og:type" content="website" />
 
-<!-- Farcaster Frame v2 / Mini App -->
-<meta name="fc:frame" content='{"version":"next","imageUrl":"https://baseiq-trivia.vercel.app/og-image.png","button":{"title":"🎮 Play BaseIQ","action":{"type":"launch_frame","name":"BaseIQ Trivia","url":"https://baseiq-trivia.vercel.app","splashImageUrl":"https://baseiq-trivia.vercel.app/og-image.png","splashBackgroundColor":"#060910"}}}' />
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
   :root {
@@ -38,430 +35,431 @@
     --glow: 0 0 30px rgba(0,82,255,0.35);
   }
 
-  * { margin:0; padding:0; box-sizing:border-box; }
+- { margin:0; padding:0; box-sizing:border-box; }
 
-  body {
-    font-family: 'Syne', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+body {
+font-family: ‘Syne’, sans-serif;
+background: var(–bg);
+color: var(–text);
+min-height: 100vh;
+overflow-x: hidden;
+}
 
-  /* Canvas background */
-  #bgCanvas {
-    position:fixed; inset:0; z-index:0;
-    pointer-events:none; width:100%; height:100%;
-  }
+/* Canvas background */
+#bgCanvas {
+position:fixed; inset:0; z-index:0;
+pointer-events:none; width:100%; height:100%;
+}
 
-  .wrap { position:relative; z-index:1; max-width:820px; margin:0 auto; padding:24px 16px; }
+.wrap { position:relative; z-index:1; max-width:820px; margin:0 auto; padding:24px 16px; }
 
-  /* Header */
-  header {
-    display:flex; align-items:center; justify-content:space-between;
-    padding:16px 24px;
-    background: rgba(6,9,16,0.85);
-    border: 1px solid var(--border);
-    border-radius:16px;
-    backdrop-filter: blur(20px);
-    margin-bottom:32px;
-    animation: slideDown 0.5s ease;
-  }
-  @keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+/* Header */
+header {
+display:flex; align-items:center; justify-content:space-between;
+padding:16px 24px;
+background: rgba(6,9,16,0.85);
+border: 1px solid var(–border);
+border-radius:16px;
+backdrop-filter: blur(20px);
+margin-bottom:32px;
+animation: slideDown 0.5s ease;
+}
+@keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
 
-  .logo {
-    font-size:1.4rem; font-weight:800; letter-spacing:-0.5px;
-    background: linear-gradient(135deg, var(--blue), var(--cyan));
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  }
-  .logo span { color: var(--gold); -webkit-text-fill-color: var(--gold); }
+.logo {
+font-size:1.4rem; font-weight:800; letter-spacing:-0.5px;
+background: linear-gradient(135deg, var(–blue), var(–cyan));
+-webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.logo span { color: var(–gold); -webkit-text-fill-color: var(–gold); }
 
-  .wallet-btn {
-    display:flex; align-items:center; gap:8px;
-    padding:10px 20px;
-    background: linear-gradient(135deg, var(--blue), #0041cc);
-    border:none; border-radius:10px;
-    color:#fff; font-family:'Syne',sans-serif; font-weight:700; font-size:0.85rem;
-    cursor:pointer; transition:all 0.2s;
-    box-shadow: var(--glow);
-  }
-  .wallet-btn:hover { transform:translateY(-2px); box-shadow:0 0 40px rgba(0,82,255,0.5); }
-  .wallet-btn.connected { background: rgba(0,230,118,0.15); border:1px solid var(--green); color:var(--green); box-shadow:none; }
+.wallet-btn {
+display:flex; align-items:center; gap:8px;
+padding:10px 20px;
+background: linear-gradient(135deg, var(–blue), #0041cc);
+border:none; border-radius:10px;
+color:#fff; font-family:‘Syne’,sans-serif; font-weight:700; font-size:0.85rem;
+cursor:pointer; transition:all 0.2s;
+box-shadow: var(–glow);
+}
+.wallet-btn:hover { transform:translateY(-2px); box-shadow:0 0 40px rgba(0,82,255,0.5); }
+.wallet-btn.connected { background: rgba(0,230,118,0.15); border:1px solid var(–green); color:var(–green); box-shadow:none; }
 
-  /* Screen system */
-  .screen { display:none; animation: fadeIn 0.4s ease; }
-  .screen.active { display:block; }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+/* Screen system */
+.screen { display:none; animation: fadeIn 0.4s ease; }
+.screen.active { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
 
-  /* ---- HOME SCREEN ---- */
-  .hero { text-align:center; padding:40px 0 32px; }
-  .hero-badge {
-    display:inline-block;
-    padding:6px 16px;
-    background: rgba(0,82,255,0.15);
-    border:1px solid rgba(0,82,255,0.4);
-    border-radius:99px;
-    font-size:0.75rem; font-weight:700; letter-spacing:2px; text-transform:uppercase;
-    color:var(--cyan); margin-bottom:20px;
-  }
-  .hero h1 {
-    font-size:clamp(2.2rem,6vw,3.8rem); font-weight:800; line-height:1.1;
-    letter-spacing:-1.5px; margin-bottom:16px;
-  }
-  .hero h1 em { font-style:normal; color:#f5c542 !important; -webkit-text-fill-color:#f5c542 !important; text-shadow: 2px 2px 20px rgba(0,0,0,0.9); }
-  .hero p { color:#8ab4d4; font-size:1.05rem; max-width:480px; margin:0 auto 36px; line-height:1.7; }
+/* –– HOME SCREEN –– */
+.hero { text-align:center; padding:40px 0 32px; }
+.hero-badge {
+display:inline-block;
+padding:6px 16px;
+background: rgba(0,82,255,0.15);
+border:1px solid rgba(0,82,255,0.4);
+border-radius:99px;
+font-size:0.75rem; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+color:var(–cyan); margin-bottom:20px;
+}
+.hero h1 {
+font-size:clamp(2.2rem,6vw,3.8rem); font-weight:800; line-height:1.1;
+letter-spacing:-1.5px; margin-bottom:16px;
+}
+.hero h1 em { font-style:normal; color:#f5c542 !important; -webkit-text-fill-color:#f5c542 !important; text-shadow: 2px 2px 20px rgba(0,0,0,0.9); }
+.hero p { color:#8ab4d4; font-size:1.05rem; max-width:480px; margin:0 auto 36px; line-height:1.7; }
 
-  .stats-row {
-    display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:40px;
-  }
-  .stat-card {
-    background: var(--surface);
-    border:1px solid var(--border);
-    border-radius:14px; padding:20px;
-    text-align:center; transition:transform 0.2s;
-  }
-  .stat-card:hover { transform:translateY(-4px); border-color:var(--blue); }
-  .stat-card .val { font-size:1.8rem; font-weight:800; font-family:'Space Mono',monospace; text-shadow: 0 0 20px currentColor; }
-  .stat-card .val.blue { color:var(--cyan); }
-  .stat-card .val.gold { color:var(--gold); }
-  .stat-card .val.green { color:var(--green); }
-  .stat-card .lbl { font-size:0.75rem; color:#7a9ab8; margin-top:4px; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
+.stats-row {
+display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:40px;
+}
+.stat-card {
+background: var(–surface);
+border:1px solid var(–border);
+border-radius:14px; padding:20px;
+text-align:center; transition:transform 0.2s;
+}
+.stat-card:hover { transform:translateY(-4px); border-color:var(–blue); }
+.stat-card .val { font-size:1.8rem; font-weight:800; font-family:‘Space Mono’,monospace; text-shadow: 0 0 20px currentColor; }
+.stat-card .val.blue { color:var(–cyan); }
+.stat-card .val.gold { color:var(–gold); }
+.stat-card .val.green { color:var(–green); }
+.stat-card .lbl { font-size:0.75rem; color:#7a9ab8; margin-top:4px; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
 
-  .rounds-section h2 { font-size:1.1rem; font-weight:700; margin-bottom:16px; letter-spacing:-0.3px; color:#ffffff; }
-  .rounds-section h2 span { color:var(--muted); font-weight:400; font-size:0.9rem; }
+.rounds-section h2 { font-size:1.1rem; font-weight:700; margin-bottom:16px; letter-spacing:-0.3px; color:#ffffff; }
+.rounds-section h2 span { color:var(–muted); font-weight:400; font-size:0.9rem; }
 
-  .round-card {
-    background: var(--surface);
-    border:1px solid var(--border);
-    border-radius:16px; padding:20px 24px;
-    display:flex; align-items:center; justify-content:space-between;
-    margin-bottom:12px; cursor:pointer; transition:all 0.2s;
-    position:relative; overflow:hidden;
-  }
-  .round-card::before {
-    content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
-    background: linear-gradient(var(--blue), var(--cyan));
-    border-radius:2px 0 0 2px;
-  }
-  .round-card.gold-card::before { background: linear-gradient(var(--gold), #e5a820); }
-  .round-card:hover { border-color:var(--blue); transform:translateX(4px); background:var(--surface2); }
-  .round-card.gold-card:hover { border-color:var(--gold); }
+.round-card {
+background: var(–surface);
+border:1px solid var(–border);
+border-radius:16px; padding:20px 24px;
+display:flex; align-items:center; justify-content:space-between;
+margin-bottom:12px; cursor:pointer; transition:all 0.2s;
+position:relative; overflow:hidden;
+}
+.round-card::before {
+content:’’; position:absolute; left:0; top:0; bottom:0; width:3px;
+background: linear-gradient(var(–blue), var(–cyan));
+border-radius:2px 0 0 2px;
+}
+.round-card.gold-card::before { background: linear-gradient(var(–gold), #e5a820); }
+.round-card:hover { border-color:var(–blue); transform:translateX(4px); background:var(–surface2); }
+.round-card.gold-card:hover { border-color:var(–gold); }
 
-  .round-info .title { font-weight:700; font-size:1rem; margin-bottom:4px; color:#ffffff; }
-  .round-info .meta { font-size:0.8rem; color:var(--muted); display:flex; gap:12px; }
-  .round-info .meta span { display:flex; align-items:center; gap:4px; }
+.round-info .title { font-weight:700; font-size:1rem; margin-bottom:4px; color:#ffffff; }
+.round-info .meta { font-size:0.8rem; color:var(–muted); display:flex; gap:12px; }
+.round-info .meta span { display:flex; align-items:center; gap:4px; }
 
-  .round-right { text-align:right; }
-  .prize-pool { font-family:'Space Mono',monospace; font-weight:700; font-size:1.1rem; color:var(--gold); }
-  .entry-fee { font-size:0.75rem; color:var(--muted); margin-top:2px; }
-  .live-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--green); margin-right:4px; animation:pulse 1.5s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+.round-right { text-align:right; }
+.prize-pool { font-family:‘Space Mono’,monospace; font-weight:700; font-size:1.1rem; color:var(–gold); }
+.entry-fee { font-size:0.75rem; color:var(–muted); margin-top:2px; }
+.live-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(–green); margin-right:4px; animation:pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
 
-  /* ---- LOBBY SCREEN ---- */
-  .back-btn {
-    display:inline-flex; align-items:center; gap:6px;
-    background:none; border:none; color:var(--muted);
-    font-family:'Syne',sans-serif; font-size:0.9rem; cursor:pointer;
-    margin-bottom:24px; transition:color 0.2s;
-  }
-  .back-btn:hover { color:var(--text); }
+/* –– LOBBY SCREEN –– */
+.back-btn {
+display:inline-flex; align-items:center; gap:6px;
+background:none; border:none; color:var(–muted);
+font-family:‘Syne’,sans-serif; font-size:0.9rem; cursor:pointer;
+margin-bottom:24px; transition:color 0.2s;
+}
+.back-btn:hover { color:var(–text); }
 
-  .lobby-header {
-    background: var(--surface);
-    border:1px solid var(--border);
-    border-radius:16px; padding:24px;
-    margin-bottom:20px;
-  }
-  .lobby-title { font-size:1.5rem; font-weight:800; margin-bottom:8px; }
-  .lobby-meta { display:flex; gap:20px; flex-wrap:wrap; }
-  .lobby-tag {
-    padding:4px 12px; border-radius:99px; font-size:0.75rem; font-weight:700;
-    background:rgba(0,82,255,0.15); border:1px solid rgba(0,82,255,0.3); color:var(--cyan);
-  }
-  .lobby-tag.gold { background:rgba(245,197,66,0.15); border-color:rgba(245,197,66,0.3); color:var(--gold); }
+.lobby-header {
+background: var(–surface);
+border:1px solid var(–border);
+border-radius:16px; padding:24px;
+margin-bottom:20px;
+}
+.lobby-title { font-size:1.5rem; font-weight:800; margin-bottom:8px; }
+.lobby-meta { display:flex; gap:20px; flex-wrap:wrap; }
+.lobby-tag {
+padding:4px 12px; border-radius:99px; font-size:0.75rem; font-weight:700;
+background:rgba(0,82,255,0.15); border:1px solid rgba(0,82,255,0.3); color:var(–cyan);
+}
+.lobby-tag.gold { background:rgba(245,197,66,0.15); border-color:rgba(245,197,66,0.3); color:var(–gold); }
 
-  .lobby-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
-  .info-box {
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:14px; padding:20px;
-  }
-  .info-box .ib-label { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); margin-bottom:8px; }
-  .info-box .ib-val { font-family:'Space Mono',monospace; font-size:1.6rem; font-weight:700; }
-  .info-box .ib-val.cyan { color:var(--cyan); }
-  .info-box .ib-val.gold { color:var(--gold); }
+.lobby-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+.info-box {
+background:var(–surface); border:1px solid var(–border);
+border-radius:14px; padding:20px;
+}
+.info-box .ib-label { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(–muted); margin-bottom:8px; }
+.info-box .ib-val { font-family:‘Space Mono’,monospace; font-size:1.6rem; font-weight:700; }
+.info-box .ib-val.cyan { color:var(–cyan); }
+.info-box .ib-val.gold { color:var(–gold); }
 
-  .players-list { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:20px; }
-  .players-list h3 { font-size:0.9rem; font-weight:700; margin-bottom:14px; }
-  .player-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
-  .player-row:last-child { border-bottom:none; }
-  .player-avatar {
-    width:32px; height:32px; border-radius:50%;
-    background: linear-gradient(135deg, var(--blue), var(--cyan));
-    display:flex; align-items:center; justify-content:center;
-    font-size:0.75rem; font-weight:700; flex-shrink:0;
-  }
-  .player-addr { font-family:'Space Mono',monospace; font-size:0.8rem; color:var(--muted); flex:1; }
-  .player-you { font-size:0.7rem; color:var(--cyan); font-weight:700; }
+.players-list { background:var(–surface); border:1px solid var(–border); border-radius:14px; padding:20px; margin-bottom:20px; }
+.players-list h3 { font-size:0.9rem; font-weight:700; margin-bottom:14px; }
+.player-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(–border); }
+.player-row:last-child { border-bottom:none; }
+.player-avatar {
+width:32px; height:32px; border-radius:50%;
+background: linear-gradient(135deg, var(–blue), var(–cyan));
+display:flex; align-items:center; justify-content:center;
+font-size:0.75rem; font-weight:700; flex-shrink:0;
+}
+.player-addr { font-family:‘Space Mono’,monospace; font-size:0.8rem; color:var(–muted); flex:1; }
+.player-you { font-size:0.7rem; color:var(–cyan); font-weight:700; }
 
-  .join-btn {
-    width:100%; padding:18px;
-    background: linear-gradient(135deg, var(--blue), #0041cc);
-    border:none; border-radius:14px;
-    color:#fff; font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem;
-    cursor:pointer; transition:all 0.2s;
-    box-shadow: var(--glow);
-    letter-spacing:-0.3px;
-  }
-  .join-btn:hover { transform:translateY(-3px); box-shadow:0 0 50px rgba(0,82,255,0.6); }
-  .join-btn:disabled { background:#1e2d45; color:var(--muted); box-shadow:none; cursor:not-allowed; transform:none; }
+.join-btn {
+width:100%; padding:18px;
+background: linear-gradient(135deg, var(–blue), #0041cc);
+border:none; border-radius:14px;
+color:#fff; font-family:‘Syne’,sans-serif; font-weight:800; font-size:1.1rem;
+cursor:pointer; transition:all 0.2s;
+box-shadow: var(–glow);
+letter-spacing:-0.3px;
+}
+.join-btn:hover { transform:translateY(-3px); box-shadow:0 0 50px rgba(0,82,255,0.6); }
+.join-btn:disabled { background:#1e2d45; color:var(–muted); box-shadow:none; cursor:not-allowed; transform:none; }
 
-  /* ---- GAME SCREEN ---- */
-  .game-header {
-    display:flex; align-items:center; justify-content:space-between;
-    margin-bottom:24px;
-  }
-  .q-counter { font-size:0.8rem; color:var(--muted); font-family:'Space Mono',monospace; }
-  .q-counter strong { color:var(--text); font-size:1rem; }
+/* –– GAME SCREEN –– */
+.game-header {
+display:flex; align-items:center; justify-content:space-between;
+margin-bottom:24px;
+}
+.q-counter { font-size:0.8rem; color:var(–muted); font-family:‘Space Mono’,monospace; }
+.q-counter strong { color:var(–text); font-size:1rem; }
 
-  .timer-wrap { position:relative; }
-  .timer-ring {
-    width:56px; height:56px;
-  }
-  .timer-ring circle {
-    fill:none; stroke-width:4;
-    transform-origin:50% 50%; transform:rotate(-90deg);
-    transition: stroke-dashoffset 1s linear, stroke 0.3s;
-  }
-  .timer-ring .bg-ring { stroke: var(--border); }
-  .timer-ring .prog-ring { stroke: var(--cyan); stroke-linecap:round; }
-  .timer-num {
-    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-    font-family:'Space Mono',monospace; font-weight:700; font-size:1rem;
-  }
+.timer-wrap { position:relative; }
+.timer-ring {
+width:56px; height:56px;
+}
+.timer-ring circle {
+fill:none; stroke-width:4;
+transform-origin:50% 50%; transform:rotate(-90deg);
+transition: stroke-dashoffset 1s linear, stroke 0.3s;
+}
+.timer-ring .bg-ring { stroke: var(–border); }
+.timer-ring .prog-ring { stroke: var(–cyan); stroke-linecap:round; }
+.timer-num {
+position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+font-family:‘Space Mono’,monospace; font-weight:700; font-size:1rem;
+}
 
-  .score-display { font-family:'Space Mono',monospace; }
-  .score-display .s-val { font-size:1.2rem; font-weight:700; color:var(--gold); }
-  .score-display .s-lbl { font-size:0.65rem; color:var(--muted); text-align:right; }
+.score-display { font-family:‘Space Mono’,monospace; }
+.score-display .s-val { font-size:1.2rem; font-weight:700; color:var(–gold); }
+.score-display .s-lbl { font-size:0.65rem; color:var(–muted); text-align:right; }
 
-  .progress-bar {
-    height:3px; background:var(--border); border-radius:99px; margin-bottom:28px; overflow:hidden;
-  }
-  .progress-fill {
-    height:100%; background:linear-gradient(90deg, var(--blue), var(--cyan));
-    border-radius:99px; transition:width 0.4s ease;
-  }
+.progress-bar {
+height:3px; background:var(–border); border-radius:99px; margin-bottom:28px; overflow:hidden;
+}
+.progress-fill {
+height:100%; background:linear-gradient(90deg, var(–blue), var(–cyan));
+border-radius:99px; transition:width 0.4s ease;
+}
 
-  .question-box {
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:18px; padding:28px;
-    margin-bottom:20px;
-  }
-  .q-category { font-size:0.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--cyan); margin-bottom:12px; }
-  .q-text { font-size:1.25rem; font-weight:700; line-height:1.5; letter-spacing:-0.3px; }
+.question-box {
+background:var(–surface); border:1px solid var(–border);
+border-radius:18px; padding:28px;
+margin-bottom:20px;
+}
+.q-category { font-size:0.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(–cyan); margin-bottom:12px; }
+.q-text { font-size:1.25rem; font-weight:700; line-height:1.5; letter-spacing:-0.3px; }
 
-  .options-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:24px; }
-  .opt-btn {
-    padding:16px 18px;
-    background:var(--surface); border:1.5px solid var(--border);
-    border-radius:12px; color:var(--text);
-    font-family:'Syne',sans-serif; font-weight:600; font-size:0.9rem;
-    cursor:pointer; transition:all 0.15s; text-align:left;
-    display:flex; align-items:center; gap:12px;
-  }
-  .opt-btn:hover:not(:disabled) { border-color:var(--blue); background:var(--surface2); transform:translateY(-2px); }
-  .opt-btn.selected { border-color:var(--blue); background:rgba(0,82,255,0.15); }
-  .opt-btn.correct { border-color:var(--green)!important; background:rgba(0,230,118,0.15)!important; color:var(--green); }
-  .opt-btn.wrong { border-color:var(--red)!important; background:rgba(255,68,68,0.1)!important; color:var(--red); }
-  .opt-btn:disabled { cursor:default; }
-  .opt-key {
-    width:24px; height:24px; border-radius:6px; flex-shrink:0;
-    background:var(--border); display:flex; align-items:center; justify-content:center;
-    font-size:0.7rem; font-family:'Space Mono',monospace; font-weight:700;
-  }
+.options-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:24px; }
+.opt-btn {
+padding:16px 18px;
+background:var(–surface); border:1.5px solid var(–border);
+border-radius:12px; color:var(–text);
+font-family:‘Syne’,sans-serif; font-weight:600; font-size:0.9rem;
+cursor:pointer; transition:all 0.15s; text-align:left;
+display:flex; align-items:center; gap:12px;
+}
+.opt-btn:hover:not(:disabled) { border-color:var(–blue); background:var(–surface2); transform:translateY(-2px); }
+.opt-btn.selected { border-color:var(–blue); background:rgba(0,82,255,0.15); }
+.opt-btn.correct { border-color:var(–green)!important; background:rgba(0,230,118,0.15)!important; color:var(–green); }
+.opt-btn.wrong { border-color:var(–red)!important; background:rgba(255,68,68,0.1)!important; color:var(–red); }
+.opt-btn:disabled { cursor:default; }
+.opt-key {
+width:24px; height:24px; border-radius:6px; flex-shrink:0;
+background:var(–border); display:flex; align-items:center; justify-content:center;
+font-size:0.7rem; font-family:‘Space Mono’,monospace; font-weight:700;
+}
 
-  .streak-bar {
-    display:flex; align-items:center; gap:8px;
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:12px; padding:12px 16px;
-  }
-  .streak-label { font-size:0.75rem; color:var(--muted); font-weight:600; }
-  .streak-dots { display:flex; gap:6px; flex:1; }
-  .streak-dot {
-    width:10px; height:10px; border-radius:50%;
-    background:var(--border); transition:all 0.3s;
-  }
-  .streak-dot.hit { background:var(--gold); box-shadow:0 0 8px rgba(245,197,66,0.6); }
-  .streak-dot.miss { background:var(--red); }
-  .streak-bonus { font-family:'Space Mono',monospace; font-size:0.8rem; color:var(--gold); font-weight:700; }
+.streak-bar {
+display:flex; align-items:center; gap:8px;
+background:var(–surface); border:1px solid var(–border);
+border-radius:12px; padding:12px 16px;
+}
+.streak-label { font-size:0.75rem; color:var(–muted); font-weight:600; }
+.streak-dots { display:flex; gap:6px; flex:1; }
+.streak-dot {
+width:10px; height:10px; border-radius:50%;
+background:var(–border); transition:all 0.3s;
+}
+.streak-dot.hit { background:var(–gold); box-shadow:0 0 8px rgba(245,197,66,0.6); }
+.streak-dot.miss { background:var(–red); }
+.streak-bonus { font-family:‘Space Mono’,monospace; font-size:0.8rem; color:var(–gold); font-weight:700; }
 
-  /* ---- RESULTS SCREEN ---- */
-  .results-hero { text-align:center; padding:32px 0 24px; }
-  .results-trophy {
-    font-size:4rem; margin-bottom:16px;
-    animation: bounceIn 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
-  }
-  @keyframes bounceIn { 0%{transform:scale(0)}100%{transform:scale(1)} }
-  .results-hero h2 { font-size:2rem; font-weight:800; margin-bottom:8px; }
-  .results-hero p { color:var(--muted); font-size:0.95rem; }
+/* –– RESULTS SCREEN –– */
+.results-hero { text-align:center; padding:32px 0 24px; }
+.results-trophy {
+font-size:4rem; margin-bottom:16px;
+animation: bounceIn 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
+}
+@keyframes bounceIn { 0%{transform:scale(0)}100%{transform:scale(1)} }
+.results-hero h2 { font-size:2rem; font-weight:800; margin-bottom:8px; }
+.results-hero p { color:var(–muted); font-size:0.95rem; }
 
-  .results-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
-  .res-stat {
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:14px; padding:18px; text-align:center;
-  }
-  .res-stat .rv { font-family:'Space Mono',monospace; font-size:1.5rem; font-weight:700; }
-  .res-stat .rl { font-size:0.7rem; color:var(--muted); margin-top:4px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+.results-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
+.res-stat {
+background:var(–surface); border:1px solid var(–border);
+border-radius:14px; padding:18px; text-align:center;
+}
+.res-stat .rv { font-family:‘Space Mono’,monospace; font-size:1.5rem; font-weight:700; }
+.res-stat .rl { font-size:0.7rem; color:var(–muted); margin-top:4px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
 
-  .leaderboard { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:20px; }
-  .leaderboard h3 { font-size:0.9rem; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-  .lb-row {
-    display:flex; align-items:center; gap:12px;
-    padding:10px 0; border-bottom:1px solid var(--border);
-    font-size:0.9rem;
-  }
-  .lb-row:last-child { border-bottom:none; }
-  .lb-rank { width:24px; font-family:'Space Mono',monospace; font-weight:700; color:var(--muted); font-size:0.85rem; }
-  .lb-rank.top { color:var(--gold); }
-  .lb-name { flex:1; font-weight:600; }
-  .lb-score { font-family:'Space Mono',monospace; color:var(--cyan); font-size:0.85rem; }
-  .lb-prize { font-family:'Space Mono',monospace; color:var(--gold); font-size:0.85rem; font-weight:700; }
-  .lb-you { background:rgba(0,82,255,0.15); border-radius:8px; padding:10px 12px; border:1px solid rgba(0,82,255,0.3); }
+.leaderboard { background:var(–surface); border:1px solid var(–border); border-radius:14px; padding:20px; margin-bottom:20px; }
+.leaderboard h3 { font-size:0.9rem; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+.lb-row {
+display:flex; align-items:center; gap:12px;
+padding:10px 0; border-bottom:1px solid var(–border);
+font-size:0.9rem;
+}
+.lb-row:last-child { border-bottom:none; }
+.lb-rank { width:24px; font-family:‘Space Mono’,monospace; font-weight:700; color:var(–muted); font-size:0.85rem; }
+.lb-rank.top { color:var(–gold); }
+.lb-name { flex:1; font-weight:600; }
+.lb-score { font-family:‘Space Mono’,monospace; color:var(–cyan); font-size:0.85rem; }
+.lb-prize { font-family:‘Space Mono’,monospace; color:var(–gold); font-size:0.85rem; font-weight:700; }
+.lb-you { background:rgba(0,82,255,0.15); border-radius:8px; padding:10px 12px; border:1px solid rgba(0,82,255,0.3); }
 
-  .action-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  .btn-secondary {
-    padding:16px; background:var(--surface2); border:1px solid var(--border);
-    border-radius:12px; color:var(--text);
-    font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;
-    cursor:pointer; transition:all 0.2s;
-  }
-  .btn-secondary:hover { border-color:var(--blue); }
-  .btn-primary {
-    padding:16px; background:linear-gradient(135deg,var(--blue),#0041cc);
-    border:none; border-radius:12px; color:#fff;
-    font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;
-    cursor:pointer; transition:all 0.2s; box-shadow:var(--glow);
-  }
-  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 0 40px rgba(0,82,255,0.5); }
+.action-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.btn-secondary {
+padding:16px; background:var(–surface2); border:1px solid var(–border);
+border-radius:12px; color:var(–text);
+font-family:‘Syne’,sans-serif; font-weight:700; font-size:0.95rem;
+cursor:pointer; transition:all 0.2s;
+}
+.btn-secondary:hover { border-color:var(–blue); }
+.btn-primary {
+padding:16px; background:linear-gradient(135deg,var(–blue),#0041cc);
+border:none; border-radius:12px; color:#fff;
+font-family:‘Syne’,sans-serif; font-weight:700; font-size:0.95rem;
+cursor:pointer; transition:all 0.2s; box-shadow:var(–glow);
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 0 40px rgba(0,82,255,0.5); }
 
-  /* ---- WALLET MODALS ---- */
-  .modal-overlay {
-    position:fixed; inset:0; z-index:200;
-    background:rgba(0,0,0,0.7);
-    backdrop-filter:blur(8px);
-    display:flex; align-items:flex-end; justify-content:center;
-    opacity:0; pointer-events:none;
-    transition:opacity 0.3s;
-  }
-  .modal-overlay.show { opacity:1; pointer-events:all; }
+/* –– WALLET MODALS –– */
+.modal-overlay {
+position:fixed; inset:0; z-index:200;
+background:rgba(0,0,0,0.7);
+backdrop-filter:blur(8px);
+display:flex; align-items:flex-end; justify-content:center;
+opacity:0; pointer-events:none;
+transition:opacity 0.3s;
+}
+.modal-overlay.show { opacity:1; pointer-events:all; }
 
-  .modal-sheet {
-    width:100%; max-width:480px;
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:24px 24px 0 0;
-    padding:28px 24px 40px;
-    transform:translateY(100%);
-    transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  }
-  .modal-overlay.show .modal-sheet { transform:translateY(0); }
+.modal-sheet {
+width:100%; max-width:480px;
+background:var(–surface);
+border:1px solid var(–border);
+border-radius:24px 24px 0 0;
+padding:28px 24px 40px;
+transform:translateY(100%);
+transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.modal-overlay.show .modal-sheet { transform:translateY(0); }
 
-  .modal-handle {
-    width:40px; height:4px; border-radius:99px;
-    background:var(--border); margin:0 auto 24px;
-  }
-  .modal-title { font-size:1.3rem; font-weight:800; margin-bottom:6px; letter-spacing:-0.5px; }
-  .modal-sub { font-size:0.85rem; color:var(--muted); margin-bottom:24px; }
+.modal-handle {
+width:40px; height:4px; border-radius:99px;
+background:var(–border); margin:0 auto 24px;
+}
+.modal-title { font-size:1.3rem; font-weight:800; margin-bottom:6px; letter-spacing:-0.5px; }
+.modal-sub { font-size:0.85rem; color:var(–muted); margin-bottom:24px; }
 
-  .wallet-option {
-    display:flex; align-items:center; gap:14px;
-    padding:16px; border-radius:14px;
-    border:1.5px solid var(--border);
-    background:var(--surface2);
-    cursor:pointer; transition:all 0.2s;
-    margin-bottom:10px;
-  }
-  .wallet-option:hover { border-color:var(--blue); transform:translateY(-2px); }
-  .wallet-icon {
-    width:44px; height:44px; border-radius:12px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:1.4rem; flex-shrink:0;
-  }
-  .wallet-name { font-weight:700; font-size:0.95rem; }
-  .wallet-desc { font-size:0.75rem; color:var(--muted); margin-top:2px; }
-  .wallet-arrow { margin-left:auto; color:var(--muted); font-size:1.2rem; }
+.wallet-option {
+display:flex; align-items:center; gap:14px;
+padding:16px; border-radius:14px;
+border:1.5px solid var(–border);
+background:var(–surface2);
+cursor:pointer; transition:all 0.2s;
+margin-bottom:10px;
+}
+.wallet-option:hover { border-color:var(–blue); transform:translateY(-2px); }
+.wallet-icon {
+width:44px; height:44px; border-radius:12px;
+display:flex; align-items:center; justify-content:center;
+font-size:1.4rem; flex-shrink:0;
+}
+.wallet-name { font-weight:700; font-size:0.95rem; }
+.wallet-desc { font-size:0.75rem; color:var(–muted); margin-top:2px; }
+.wallet-arrow { margin-left:auto; color:var(–muted); font-size:1.2rem; }
 
-  .modal-divider {
-    display:flex; align-items:center; gap:12px;
-    color:var(--muted); font-size:0.75rem; margin:16px 0;
-  }
-  .modal-divider::before, .modal-divider::after {
-    content:''; flex:1; height:1px; background:var(--border);
-  }
+.modal-divider {
+display:flex; align-items:center; gap:12px;
+color:var(–muted); font-size:0.75rem; margin:16px 0;
+}
+.modal-divider::before, .modal-divider::after {
+content:’’; flex:1; height:1px; background:var(–border);
+}
 
-  /* Disconnect modal */
-  .disconnect-info {
-    background:var(--surface2); border:1px solid var(--border);
-    border-radius:14px; padding:16px; margin-bottom:20px;
-    display:flex; align-items:center; gap:12px;
-  }
-  .disconnect-avatar {
-    width:44px; height:44px; border-radius:50%;
-    background:linear-gradient(135deg,var(--blue),var(--cyan));
-    display:flex; align-items:center; justify-content:center;
-    font-size:1.2rem; flex-shrink:0;
-  }
-  .disconnect-addr { font-family:'Space Mono',monospace; font-size:0.85rem; font-weight:700; }
-  .disconnect-bal { font-size:0.75rem; color:var(--muted); margin-top:2px; }
+/* Disconnect modal */
+.disconnect-info {
+background:var(–surface2); border:1px solid var(–border);
+border-radius:14px; padding:16px; margin-bottom:20px;
+display:flex; align-items:center; gap:12px;
+}
+.disconnect-avatar {
+width:44px; height:44px; border-radius:50%;
+background:linear-gradient(135deg,var(–blue),var(–cyan));
+display:flex; align-items:center; justify-content:center;
+font-size:1.2rem; flex-shrink:0;
+}
+.disconnect-addr { font-family:‘Space Mono’,monospace; font-size:0.85rem; font-weight:700; }
+.disconnect-bal { font-size:0.75rem; color:var(–muted); margin-top:2px; }
 
-  .disconnect-btn {
-    width:100%; padding:16px;
-    background:rgba(255,68,68,0.15);
-    border:1.5px solid var(--red);
-    border-radius:12px; color:var(--red);
-    font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;
-    cursor:pointer; transition:all 0.2s; margin-bottom:10px;
-  }
-  .disconnect-btn:hover { background:rgba(255,68,68,0.25); }
+.disconnect-btn {
+width:100%; padding:16px;
+background:rgba(255,68,68,0.15);
+border:1.5px solid var(–red);
+border-radius:12px; color:var(–red);
+font-family:‘Syne’,sans-serif; font-weight:700; font-size:0.95rem;
+cursor:pointer; transition:all 0.2s; margin-bottom:10px;
+}
+.disconnect-btn:hover { background:rgba(255,68,68,0.25); }
 
-  .cancel-btn {
-    width:100%; padding:16px;
-    background:var(--surface2); border:1px solid var(--border);
-    border-radius:12px; color:var(--muted);
-    font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;
-    cursor:pointer; transition:all 0.2s;
-  }
-  .cancel-btn:hover { color:var(--text); border-color:var(--blue); }
+.cancel-btn {
+width:100%; padding:16px;
+background:var(–surface2); border:1px solid var(–border);
+border-radius:12px; color:var(–muted);
+font-family:‘Syne’,sans-serif; font-weight:700; font-size:0.95rem;
+cursor:pointer; transition:all 0.2s;
+}
+.cancel-btn:hover { color:var(–text); border-color:var(–blue); }
 
-  /* Connecting state */
-  .connecting-spinner {
-    width:48px; height:48px; border-radius:50%;
-    border:3px solid var(--border);
-    border-top-color:var(--cyan);
-    animation:spin 0.8s linear infinite;
-    margin:0 auto 16px;
-  }
-  @keyframes spin { to{transform:rotate(360deg)} }
-  .connecting-text { text-align:center; color:var(--muted); font-size:0.9rem; }
-  .connecting-name { text-align:center; font-weight:700; font-size:1.1rem; margin-bottom:8px; }
+/* Connecting state */
+.connecting-spinner {
+width:48px; height:48px; border-radius:50%;
+border:3px solid var(–border);
+border-top-color:var(–cyan);
+animation:spin 0.8s linear infinite;
+margin:0 auto 16px;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+.connecting-text { text-align:center; color:var(–muted); font-size:0.9rem; }
+.connecting-name { text-align:center; font-weight:700; font-size:1.1rem; margin-bottom:8px; }
 
-  /* Toast */
-  .toast {
-    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px);
-    background:var(--surface2); border:1px solid var(--border);
-    border-radius:12px; padding:12px 20px;
-    font-size:0.85rem; font-weight:600;
-    transition:transform 0.3s; z-index:100; white-space:nowrap;
-  }
-  .toast.show { transform:translateX(-50%) translateY(0); }
-  .toast.success { border-color:var(--green); color:var(--green); }
-  .toast.error { border-color:var(--red); color:var(--red); }
+/* Toast */
+.toast {
+position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px);
+background:var(–surface2); border:1px solid var(–border);
+border-radius:12px; padding:12px 20px;
+font-size:0.85rem; font-weight:600;
+transition:transform 0.3s; z-index:100; white-space:nowrap;
+}
+.toast.show { transform:translateX(-50%) translateY(0); }
+.toast.success { border-color:var(–green); color:var(–green); }
+.toast.error { border-color:var(–red); color:var(–red); }
 
-  @media(max-width:540px){
-    .stats-row,.lobby-grid,.results-grid,.action-row { grid-template-columns:1fr 1fr; }
-    .options-grid { grid-template-columns:1fr; }
-    .results-grid { grid-template-columns:repeat(3,1fr); }
-  }
+@media(max-width:540px){
+.stats-row,.lobby-grid,.results-grid,.action-row { grid-template-columns:1fr 1fr; }
+.options-grid { grid-template-columns:1fr; }
+.results-grid { grid-template-columns:repeat(3,1fr); }
+}
 </style>
+
 </head>
 <body>
 <canvas id="bgCanvas"></canvas>
@@ -476,6 +474,7 @@
   </header>
 
   <!-- HOME -->
+
   <div class="screen active" id="homeScreen">
     <div class="hero">
       <div class="hero-badge">⚡ Live on Base Mainnet</div>
@@ -483,631 +482,545 @@
       <p>Answer trivia questions faster and smarter than everyone else. Top players split the prize pool every round.</p>
     </div>
 
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="val blue" id="totalPrize">4.82</div>
-        <div class="lbl">ETH Paid Out</div>
-      </div>
-      <div class="stat-card">
-        <div class="val gold">1,204</div>
-        <div class="lbl">Players</div>
-      </div>
-      <div class="stat-card">
-        <div class="val green">38</div>
-        <div class="lbl">Rounds Today</div>
+```
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="val blue" id="totalPrize">4.82</div>
+    <div class="lbl">ETH Paid Out</div>
+  </div>
+  <div class="stat-card">
+    <div class="val gold">1,204</div>
+    <div class="lbl">Players</div>
+  </div>
+  <div class="stat-card">
+    <div class="val green">38</div>
+    <div class="lbl">Rounds Today</div>
+  </div>
+</div>
+
+<div class="rounds-section">
+  <h2>Live Rounds <span>— Join before they fill</span></h2>
+
+  <div class="round-card" onclick="openLobby('crypto')">
+    <div class="round-info">
+      <div class="title"><span class="live-dot"></span>Crypto Deep Dive</div>
+      <div class="meta">
+        <span>🎯 10 Questions</span>
+        <span>👥 7/10 Players</span>
+        <span>⏱ 20s each</span>
       </div>
     </div>
-
-    <div class="rounds-section">
-      <h2>Live Rounds <span>— Join before they fill</span></h2>
-
-      <div class="round-card" onclick="openLobby('crypto')">
-        <div class="round-info">
-          <div class="title"><span class="live-dot"></span>Crypto Deep Dive</div>
-          <div class="meta">
-            <span>🎯 10 Questions</span>
-            <span>👥 7/10 Players</span>
-            <span>⏱ 20s each</span>
-          </div>
-        </div>
-        <div class="round-right">
-          <div class="prize-pool">0.05 ETH</div>
-          <div class="entry-fee">Entry: 0.005 ETH</div>
-        </div>
-      </div>
-
-      <div class="round-card gold-card" onclick="openLobby('mix')">
-        <div class="round-info">
-          <div class="title"><span class="live-dot"></span>⭐ Grand Mix — Featured</div>
-          <div class="meta">
-            <span>🎯 15 Questions</span>
-            <span>👥 5/20 Players</span>
-            <span>⏱ 25s each</span>
-          </div>
-        </div>
-        <div class="round-right">
-          <div class="prize-pool">0.18 ETH</div>
-          <div class="entry-fee">Entry: 0.01 ETH</div>
-        </div>
-      </div>
-
-      <div class="round-card" onclick="openLobby('general')">
-        <div class="round-info">
-          <div class="title">General Knowledge Blitz</div>
-          <div class="meta">
-            <span>🎯 10 Questions</span>
-            <span>👥 3/10 Players</span>
-            <span>⏱ 15s each</span>
-          </div>
-        </div>
-        <div class="round-right">
-          <div class="prize-pool">0.08 ETH</div>
-          <div class="entry-fee">Entry: 0.008 ETH</div>
-        </div>
-      </div>
+    <div class="round-right">
+      <div class="prize-pool">0.05 ETH</div>
+      <div class="entry-fee">Entry: 0.005 ETH</div>
     </div>
   </div>
 
+  <div class="round-card gold-card" onclick="openLobby('mix')">
+    <div class="round-info">
+      <div class="title"><span class="live-dot"></span>⭐ Grand Mix — Featured</div>
+      <div class="meta">
+        <span>🎯 15 Questions</span>
+        <span>👥 5/20 Players</span>
+        <span>⏱ 25s each</span>
+      </div>
+    </div>
+    <div class="round-right">
+      <div class="prize-pool">0.18 ETH</div>
+      <div class="entry-fee">Entry: 0.01 ETH</div>
+    </div>
+  </div>
+
+  <div class="round-card" onclick="openLobby('general')">
+    <div class="round-info">
+      <div class="title">General Knowledge Blitz</div>
+      <div class="meta">
+        <span>🎯 10 Questions</span>
+        <span>👥 3/10 Players</span>
+        <span>⏱ 15s each</span>
+      </div>
+    </div>
+    <div class="round-right">
+      <div class="prize-pool">0.08 ETH</div>
+      <div class="entry-fee">Entry: 0.008 ETH</div>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+
   <!-- LOBBY -->
+
   <div class="screen" id="lobbyScreen">
     <button class="back-btn" onclick="showScreen('homeScreen')">← Back</button>
     <div class="lobby-header">
       <div class="lobby-title" id="lobbyTitle">⭐ Grand Mix — Featured</div>
-      <div class
+      <div class="lobby-meta">
+        <span class="lobby-tag gold">Featured</span>
+        <span class="lobby-tag">15 Questions</span>
+        <span class="lobby-tag">25s Timer</span>
+      </div>
+    </div>
+    <div class="lobby-grid">
+      <div class="info-box">
+        <div class="ib-label">Prize Pool</div>
+        <div class="ib-val gold" id="lobbyPrize">0.18 ETH</div>
+      </div>
+      <div class="info-box">
+        <div class="ib-label">Entry Fee</div>
+        <div class="ib-val cyan" id="lobbyFee">0.01 ETH</div>
+      </div>
+    </div>
+    <div class="players-list">
+      <h3>Players in Lobby <span id="playerCount" style="color:var(--muted);font-weight:400">(5/20)</span></h3>
+      <div class="player-row">
+        <div class="player-avatar">A</div>
+        <div class="player-addr">0x1a2b...3c4d</div>
+      </div>
+      <div class="player-row">
+        <div class="player-avatar">B</div>
+        <div class="player-addr">0x5e6f...7g8h</div>
+      </div>
+      <div class="player-row">
+        <div class="player-avatar">C</div>
+        <div class="player-addr">0x9i0j...1k2l</div>
+      </div>
+    </div>
+    <button class="join-btn" onclick="startGame()">Join Round — Pay Entry Fee</button>
+  </div>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BaseIQ — On-Chain Trivia</title>
+  <!-- GAME -->
 
-<!-- Farcaster Mini App Meta Tags -->
-<meta property="fc:frame" content="vNext" />
-<meta property="fc:frame:image" content="https://baseiq-trivia.vercel.app/og-image.png" />
-<meta property="fc:frame:button:1" content="🎮 Play BaseIQ" />
-<meta property="fc:frame:button:1:action" content="link" />
-<meta property="fc:frame:button:1:target" content="https://baseiq-trivia.vercel.app" />
+  <div class="screen" id="gameScreen">
+    <div class="game-header">
+      <div class="q-counter">Question <strong id="qNum">1</strong>/10</div>
+      <div class="timer-wrap">
+        <svg class="timer-ring" viewBox="0 0 56 56">
+          <circle class="bg-ring" cx="28" cy="28" r="24"/>
+          <circle class="prog-ring" id="timerRing" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-num" id="timerNum">20</div>
+      </div>
+      <div class="score-display">
+        <div class="s-val" id="scoreVal">0</div>
+        <div class="s-lbl">POINTS</div>
+      </div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+    <div class="question-box">
+      <div class="q-category" id="qCategory">CRYPTO</div>
+      <div class="q-text" id="qText">Loading question...</div>
+    </div>
+    <div class="options-grid" id="optionsGrid"></div>
+    <div class="streak-bar">
+      <span class="streak-label">STREAK</span>
+      <div class="streak-dots" id="streakDots"></div>
+      <span class="streak-bonus" id="streakBonus">+0</span>
+    </div>
+  </div>
 
-<!-- Open Graph for social sharing -->
-<meta property="og:title" content="BaseIQ — Win USDC Playing Trivia on Base" />
-<meta property="og:description" content="Answer crypto & general knowledge questions faster than everyone else. Top 3 players split the USDC prize pool every round." />
-<meta property="og:image" content="https://baseiq-trivia.vercel.app/og-image.png" />
-<meta property="og:url" content="https://baseiq-trivia.vercel.app" />
-<meta property="og:type" content="website" />
+  <!-- RESULTS -->
 
-<!-- Farcaster Frame v2 / Mini App -->
-<meta name="fc:frame" content='{"version":"next","imageUrl":"https://baseiq-trivia.vercel.app/og-image.png","button":{"title":"🎮 Play BaseIQ","action":{"type":"launch_frame","name":"BaseIQ Trivia","url":"https://baseiq-trivia.vercel.app","splashImageUrl":"https://baseiq-trivia.vercel.app/og-image.png","splashBackgroundColor":"#060910"}}}' />
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
-<style>
-  :root {
-    --bg: #060910;
-    --surface: #0d1421;
-    --surface2: #111c2e;
-    --border: #1e2d45;
-    --blue: #0052ff;
-    --cyan: #00d4ff;
-    --gold: #f5c542;
-    --green: #00e676;
-    --red: #ff4444;
-    --text: #e8f0ff;
-    --muted: #5a7090;
-    --glow: 0 0 30px rgba(0,82,255,0.35);
-  }
+  <div class="screen" id="resultsScreen">
+    <div class="results-hero">
+      <div class="results-trophy" id="resultsTrophy">🏆</div>
+      <h2 id="resultsTitle">Round Complete!</h2>
+      <p id="resultsSub">Here's how you did</p>
+    </div>
+    <div class="results-grid">
+      <div class="res-stat">
+        <div class="rv" id="resScore" style="color:var(--gold)">0</div>
+        <div class="rl">Score</div>
+      </div>
+      <div class="res-stat">
+        <div class="rv" id="resCorrect" style="color:var(--green)">0/10</div>
+        <div class="rl">Correct</div>
+      </div>
+      <div class="res-stat">
+        <div class="rv" id="resRank" style="color:var(--cyan)">#1</div>
+        <div class="rl">Rank</div>
+      </div>
+    </div>
+    <div class="leaderboard">
+      <h3>🏆 Leaderboard</h3>
+      <div id="leaderboardRows"></div>
+    </div>
+    <div class="action-row">
+      <button class="btn-secondary" onclick="showScreen('homeScreen')">← Home</button>
+      <button class="btn-primary" onclick="showScreen('homeScreen')">Play Again</button>
+    </div>
+  </div>
+</div>
 
-  * { margin:0; padding:0; box-sizing:border-box; }
+<!-- CONNECT WALLET MODAL -->
 
-  body {
-    font-family: 'Syne', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+<div class="modal-overlay" id="connectModal" onclick="closeModal('connectModal')">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Connect Wallet</div>
+    <div class="modal-sub">Choose your wallet to get started</div>
+    <div class="wallet-option" onclick="connectWithWallet('MetaMask')">
+      <div class="wallet-icon" style="background:#f6851b20">🦊</div>
+      <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
+      <div class="wallet-arrow">›</div>
+    </div>
+    <div class="wallet-option" onclick="connectWithWallet('Coinbase')">
+      <div class="wallet-icon" style="background:#0052ff20">🔵</div>
+      <div><div class="wallet-name">Coinbase Wallet</div><div class="wallet-desc">Mobile & extension</div></div>
+      <div class="wallet-arrow">›</div>
+    </div>
+    <div class="wallet-option" onclick="connectWithWallet('WalletConnect')">
+      <div class="wallet-icon" style="background:#3b99fc20">🔗</div>
+      <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Any compatible wallet</div></div>
+      <div class="wallet-arrow">›</div>
+    </div>
+    <div class="modal-divider">or</div>
+    <div class="wallet-option" onclick="connectWithWallet('Demo')">
+      <div class="wallet-icon" style="background:#00e67620">🎮</div>
+      <div><div class="wallet-name">Demo Mode</div><div class="wallet-desc">Try without a wallet</div></div>
+      <div class="wallet-arrow">›</div>
+    </div>
+  </div>
+</div>
 
-  /* Canvas background */
-  #bgCanvas {
-    position:fixed; inset:0; z-index:0;
-    pointer-events:none; width:100%; height:100%;
-  }
+<!-- DISCONNECT MODAL -->
 
-  .wrap { position:relative; z-index:1; max-width:820px; margin:0 auto; padding:24px 16px; }
+<div class="modal-overlay" id="disconnectModal" onclick="closeModal('disconnectModal')">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Wallet Connected</div>
+    <div class="disconnect-info">
+      <div class="disconnect-avatar">👤</div>
+      <div>
+        <div class="disconnect-addr" id="connectedAddr">0x1234...5678</div>
+        <div class="disconnect-bal" id="connectedBal">0.00 ETH</div>
+      </div>
+    </div>
+    <button class="disconnect-btn" onclick="disconnectWallet()">Disconnect Wallet</button>
+    <button class="cancel-btn" onclick="closeModal('disconnectModal')">Cancel</button>
+  </div>
+</div>
 
-  /* Header */
-  header {
-    display:flex; align-items:center; justify-content:space-between;
-    padding:16px 24px;
-    background: rgba(6,9,16,0.85);
-    border: 1px solid var(--border);
-    border-radius:16px;
-    backdrop-filter: blur(20px);
-    margin-bottom:32px;
-    animation: slideDown 0.5s ease;
-  }
-  @keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+<!-- TOAST -->
 
-  .logo {
-    font-size:1.4rem; font-weight:800; letter-spacing:-0.5px;
-    background: linear-gradient(135deg, var(--blue), var(--cyan));
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  }
-  .logo span { color: var(--gold); -webkit-text-fill-color: var(--gold); }
+<div class="toast" id="toast"></div>
 
-  .wallet-btn {
-    display:flex; align-items:center; gap:8px;
-    padding:10px 20px;
-    background: linear-gradient(135deg, var(--blue), #0041cc);
-    border:none; border-radius:10px;
-    color:#fff; font-family:'Syne',sans-serif; font-weight:700; font-size:0.85rem;
-    cursor:pointer; transition:all 0.2s;
-    box-shadow: var(--glow);
-  }
-  .wallet-btn:hover { transform:translateY(-2px); box-shadow:0 0 40px rgba(0,82,255,0.5); }
-  .wallet-btn.connected { background: rgba(0,230,118,0.15); border:1px solid var(--green); color:var(--green); box-shadow:none; }
+<script>
+// ─── State ───────────────────────────────────────────────
+let wallet = null;
+let currentRound = null;
+let currentQ = 0;
+let score = 0;
+let streak = 0;
+let timerInterval = null;
+let timeLeft = 20;
+let answered = false;
 
-  /* Screen system */
-  .screen { display:none; animation: fadeIn 0.4s ease; }
-  .screen.active { display:block; }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+// ─── Questions ───────────────────────────────────────────
+const questions = {
+  crypto: [
+    { cat:'CRYPTO', q:'What consensus mechanism does Ethereum use after The Merge?', opts:['Proof of Work','Proof of Stake','Delegated PoS','Proof of Authority'], ans:1 },
+    { cat:'CRYPTO', q:'Which blockchain is Base built on top of?', opts:['Ethereum','Solana','Polygon','Avalanche'], ans:0 },
+    { cat:'CRYPTO', q:'What does "ERC-20" define?', opts:['NFT standard','Fungible token standard','DAO governance','Layer 2 bridges'], ans:1 },
+    { cat:'CRYPTO', q:'Who created Bitcoin?', opts:['Vitalik Buterin','Satoshi Nakamoto','Charlie Lee','Gavin Wood'], ans:1 },
+    { cat:'CRYPTO', q:'What is the max supply of Bitcoin?', opts:['18 million','100 million','21 million','No limit'], ans:2 },
+    { cat:'CRYPTO', q:'What does "DeFi" stand for?', opts:['Digital Finance','Decentralized Finance','Defined Finance','Distributed Finance'], ans:1 },
+    { cat:'CRYPTO', q:'Which token is native to the Ethereum network?', opts:['BTC','SOL','ETH','BNB'], ans:2 },
+    { cat:'CRYPTO', q:'What is a "gas fee" in Ethereum?', opts:['Storage cost','Transaction fee','Mining reward','Bridge toll'], ans:1 },
+    { cat:'CRYPTO', q:'What does NFT stand for?', opts:['New Financial Token','Non-Fungible Token','Network File Transfer','Null Frame Token'], ans:1 },
+    { cat:'CRYPTO', q:'Which company created the Base blockchain?', opts:['Binance','Coinbase','Kraken','Gemini'], ans:1 },
+  ],
+  mix: [
+    { cat:'SCIENCE', q:'What is the chemical symbol for gold?', opts:['Go','Gd','Au','Ag'], ans:2 },
+    { cat:'CRYPTO', q:'What is a "smart contract"?', opts:['A legal document','Self-executing blockchain code','An AI assistant','A trading bot'], ans:1 },
+    { cat:'HISTORY', q:'In what year did the internet become publicly available?', opts:['1983','1991','1995','2001'], ans:1 },
+    { cat:'CRYPTO', q:'What does "HODL" mean in crypto?', opts:['Hold On for Dear Life','High Order Digital Ledger','Hashing Output Data Layer','None of the above'], ans:0 },
+    { cat:'SCIENCE', q:'How many planets are in our solar system?', opts:['7','8','9','10'], ans:1 },
+    { cat:'CRYPTO', q:'What is "yield farming"?', opts:['Mining Bitcoin','Earning rewards by providing liquidity','Staking ETH','Creating NFTs'], ans:1 },
+    { cat:'GEOGRAPHY', q:'What is the capital of Japan?', opts:['Osaka','Kyoto','Tokyo','Hiroshima'], ans:2 },
+    { cat:'CRYPTO', q:'What is a blockchain "fork"?', opts:['A copy of a wallet','A protocol rule change','A type of token','An exchange listing'], ans:1 },
+    { cat:'MATH', q:'What is 15% of 200?', opts:['25','30','35','40'], ans:1 },
+    { cat:'CRYPTO', q:'What does "APY" stand for in DeFi?', opts:['Annual Percentage Yield','Average Price Year','Asset Protocol Yield','Auto Pay Yield'], ans:0 },
+    { cat:'SCIENCE', q:'What gas do plants absorb from the air?', opts:['Oxygen','Nitrogen','Carbon Dioxide','Hydrogen'], ans:2 },
+    { cat:'CRYPTO', q:'What is a "seed phrase"?', opts:['A password','A wallet recovery phrase','A type of token','A smart contract'], ans:1 },
+    { cat:'HISTORY', q:'Who painted the Mona Lisa?', opts:['Michelangelo','Raphael','Leonardo da Vinci','Donatello'], ans:2 },
+    { cat:'CRYPTO', q:'Which network has the lowest fees?', opts:['Ethereum mainnet','Bitcoin','Base / L2s','Litecoin'], ans:2 },
+    { cat:'MATH', q:'What is the square root of 144?', opts:['11','12','13','14'], ans:1 },
+  ],
+  general: [
+    { cat:'GENERAL', q:'How many sides does a hexagon have?', opts:['5','6','7','8'], ans:1 },
+    { cat:'GENERAL', q:'What is the largest ocean on Earth?', opts:['Atlantic','Indian','Arctic','Pacific'], ans:3 },
+    { cat:'GENERAL', q:'Which element has the symbol "O"?', opts:['Osmium','Oxygen','Oganesson','Oxide'], ans:1 },
+    { cat:'GENERAL', q:'What year did World War II end?', opts:['1943','1944','1945','1946'], ans:2 },
+    { cat:'GENERAL', q:'Who wrote Romeo and Juliet?', opts:['Charles Dickens','William Shakespeare','Jane Austen','Mark Twain'], ans:1 },
+    { cat:'GENERAL', q:'What is the fastest land animal?', opts:['Lion','Horse','Cheetah','Leopard'], ans:2 },
+    { cat:'GENERAL', q:'How many colors are in a rainbow?', opts:['5','6','7','8'], ans:2 },
+    { cat:'GENERAL', q:'What is H2O commonly known as?', opts:['Salt','Water','Hydrogen','Oxygen'], ans:1 },
+    { cat:'GENERAL', q:'Which planet is closest to the Sun?', opts:['Venus','Earth','Mercury','Mars'], ans:2 },
+    { cat:'GENERAL', q:'How many continents are on Earth?', opts:['5','6','7','8'], ans:2 },
+  ]
+};
 
-  /* ---- HOME SCREEN ---- */
-  .hero { text-align:center; padding:40px 0 32px; }
-  .hero-badge {
-    display:inline-block;
-    padding:6px 16px;
-    background: rgba(0,82,255,0.15);
-    border:1px solid rgba(0,82,255,0.4);
-    border-radius:99px;
-    font-size:0.75rem; font-weight:700; letter-spacing:2px; text-transform:uppercase;
-    color:var(--cyan); margin-bottom:20px;
-  }
-  .hero h1 {
-    font-size:clamp(2.2rem,6vw,3.8rem); font-weight:800; line-height:1.1;
-    letter-spacing:-1.5px; margin-bottom:16px;
-  }
-  .hero h1 em { font-style:normal; color:#f5c542 !important; -webkit-text-fill-color:#f5c542 !important; text-shadow: 2px 2px 20px rgba(0,0,0,0.9); }
-  .hero p { color:#8ab4d4; font-size:1.05rem; max-width:480px; margin:0 auto 36px; line-height:1.7; }
+// ─── Screen Management ───────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 
-  .stats-row {
-    display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:40px;
+// ─── Wallet ──────────────────────────────────────────────
+function connectWallet() {
+  if (wallet) {
+    document.getElementById('connectedAddr').textContent = wallet.addr;
+    document.getElementById('connectedBal').textContent = wallet.bal + ' ETH';
+    showModal('disconnectModal');
+  } else {
+    showModal('connectModal');
   }
-  .stat-card {
-    background: var(--surface);
-    border:1px solid var(--border);
-    border-radius:14px; padding:20px;
-    text-align:center; transition:transform 0.2s;
-  }
-  .stat-card:hover { transform:translateY(-4px); border-color:var(--blue); }
-  .stat-card .val { font-size:1.8rem; font-weight:800; font-family:'Space Mono',monospace; text-shadow: 0 0 20px currentColor; }
-  .stat-card .val.blue { color:var(--cyan); }
-  .stat-card .val.gold { color:var(--gold); }
-  .stat-card .val.green { color:var(--green); }
-  .stat-card .lbl { font-size:0.75rem; color:#7a9ab8; margin-top:4px; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
+}
 
-  .rounds-section h2 { font-size:1.1rem; font-weight:700; margin-bottom:16px; letter-spacing:-0.3px; color:#ffffff; }
-  .rounds-section h2 span { color:var(--muted); font-weight:400; font-size:0.9rem; }
+function connectWithWallet(name) {
+  closeModal('connectModal');
+  // Show connecting state
+  const modal = document.getElementById('connectModal');
+  const sheet = modal.querySelector('.modal-sheet');
+  sheet.innerHTML = `
+    <div class="modal-handle"></div>
+    <div class="connecting-spinner"></div>
+    <div class="connecting-name">Connecting to ${name}...</div>
+    <div class="connecting-text">Please approve in your wallet</div>
+  `;
+  modal.classList.add('show');
+  setTimeout(() => {
+    closeModal('connectModal');
+    // Reset sheet
+    sheet.innerHTML = `
+      <div class="modal-handle"></div>
+      <div class="modal-title">Connect Wallet</div>
+      <div class="modal-sub">Choose your wallet to get started</div>
+      <div class="wallet-option" onclick="connectWithWallet('MetaMask')">
+        <div class="wallet-icon" style="background:#f6851b20">🦊</div>
+        <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
+        <div class="wallet-arrow">›</div>
+      </div>
+      <div class="wallet-option" onclick="connectWithWallet('Coinbase')">
+        <div class="wallet-icon" style="background:#0052ff20">🔵</div>
+        <div><div class="wallet-name">Coinbase Wallet</div><div class="wallet-desc">Mobile & extension</div></div>
+        <div class="wallet-arrow">›</div>
+      </div>
+      <div class="wallet-option" onclick="connectWithWallet('WalletConnect')">
+        <div class="wallet-icon" style="background:#3b99fc20">🔗</div>
+        <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Any compatible wallet</div></div>
+        <div class="wallet-arrow">›</div>
+      </div>
+      <div class="modal-divider">or</div>
+      <div class="wallet-option" onclick="connectWithWallet('Demo')">
+        <div class="wallet-icon" style="background:#00e67620">🎮</div>
+        <div><div class="wallet-name">Demo Mode</div><div class="wallet-desc">Try without a wallet</div></div>
+        <div class="wallet-arrow">›</div>
+      </div>
+    `;
+    wallet = {
+      addr: '0x' + Math.random().toString(16).substr(2,4).toUpperCase() + '...' + Math.random().toString(16).substr(2,4).toUpperCase(),
+      bal: (Math.random() * 2).toFixed(4),
+      name
+    };
+    const btn = document.getElementById('walletBtn');
+    btn.textContent = wallet.addr;
+    btn.classList.add('connected');
+    showToast('✅ Wallet connected!', 'success');
+  }, 1800);
+}
 
-  .round-card {
-    background: var(--surface);
-    border:1px solid var(--border);
-    border-radius:16px; padding:20px 24px;
-    display:flex; align-items:center; justify-content:space-between;
-    margin-bottom:12px; cursor:pointer; transition:all 0.2s;
-    position:relative; overflow:hidden;
-  }
-  .round-card::before {
-    content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
-    background: linear-gradient(var(--blue), var(--cyan));
-    border-radius:2px 0 0 2px;
-  }
-  .round-card.gold-card::before { background: linear-gradient(var(--gold), #e5a820); }
-  .round-card:hover { border-color:var(--blue); transform:translateX(4px); background:var(--surface2); }
-  .round-card.gold-card:hover { border-color:var(--gold); }
+function disconnectWallet() {
+  closeModal('disconnectModal');
+  wallet = null;
+  const btn = document.getElementById('walletBtn');
+  btn.innerHTML = `<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><circle cx="17" cy="14" r="1" fill="currentColor"/></svg> Connect Wallet`;
+  btn.classList.remove('connected');
+  showToast('Wallet disconnected', 'error');
+}
 
-  .round-info .title { font-weight:700; font-size:1rem; margin-bottom:4px; color:#ffffff; }
-  .round-info .meta { font-size:0.8rem; color:var(--muted); display:flex; gap:12px; }
-  .round-info .meta span { display:flex; align-items:center; gap:4px; }
+// ─── Lobby ───────────────────────────────────────────────
+function openLobby(type) {
+  currentRound = type;
+  const config = {
+    crypto: { title:'Crypto Deep Dive', prize:'0.05 ETH', fee:'0.005 ETH', players:'7/10' },
+    mix:    { title:'⭐ Grand Mix — Featured', prize:'0.18 ETH', fee:'0.01 ETH', players:'5/20' },
+    general:{ title:'General Knowledge Blitz', prize:'0.08 ETH', fee:'0.008 ETH', players:'3/10' }
+  };
+  const c = config[type];
+  document.getElementById('lobbyTitle').textContent = c.title;
+  document.getElementById('lobbyPrize').textContent = c.prize;
+  document.getElementById('lobbyFee').textContent = c.fee;
+  document.getElementById('playerCount').textContent = `(${c.players})`;
+  showScreen('lobbyScreen');
+}
 
-  .round-right { text-align:right; }
-  .prize-pool { font-family:'Space Mono',monospace; font-weight:700; font-size:1.1rem; color:var(--gold); }
-  .entry-fee { font-size:0.75rem; color:var(--muted); margin-top:2px; }
-  .live-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--green); margin-right:4px; animation:pulse 1.5s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+// ─── Game ─────────────────────────────────────────────────
+function startGame() {
+  if (!wallet) { showToast('Connect wallet first!', 'error'); connectWallet(); return; }
+  currentQ = 0; score = 0; streak = 0;
+  showScreen('gameScreen');
+  loadQuestion();
+}
 
-  /* ---- LOBBY SCREEN ---- */
-  .back-btn {
-    display:inline-flex; align-items:center; gap:6px;
-    background:none; border:none; color:var(--muted);
-    font-family:'Syne',sans-serif; font-size:0.9rem; cursor:pointer;
-    margin-bottom:24px; transition:color 0.2s;
-  }
-  .back-btn:hover { color:var(--text); }
+function loadQuestion() {
+  const qs = questions[currentRound];
+  if (currentQ >= qs.length) { endGame(); return; }
+  const q = qs[currentQ];
+  answered = false;
+  timeLeft = currentRound === 'mix' ? 25 : currentRound === 'general' ? 15 : 20;
 
-  .lobby-header {
-    background: var(--surface);
-    border:1px solid var(--border);
-    border-radius:16px; padding:24px;
-    margin-bottom:20px;
-  }
-  .lobby-title { font-size:1.5rem; font-weight:800; margin-bottom:8px; }
-  .lobby-meta { display:flex; gap:20px; flex-wrap:wrap; }
-  .lobby-tag {
-    padding:4px 12px; border-radius:99px; font-size:0.75rem; font-weight:700;
-    background:rgba(0,82,255,0.15); border:1px solid rgba(0,82,255,0.3); color:var(--cyan);
-  }
-  .lobby-tag.gold { background:rgba(245,197,66,0.15); border-color:rgba(245,197,66,0.3); color:var(--gold); }
+  document.getElementById('qNum').textContent = currentQ + 1;
+  document.getElementById('qCategory').textContent = q.cat;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('progressFill').style.width = ((currentQ / qs.length) * 100) + '%';
 
-  .lobby-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
-  .info-box {
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:14px; padding:20px;
-  }
-  .info-box .ib-label { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); margin-bottom:8px; }
-  .info-box .ib-val { font-family:'Space Mono',monospace; font-size:1.6rem; font-weight:700; }
-  .info-box .ib-val.cyan { color:var(--cyan); }
-  .info-box .ib-val.gold { color:var(--gold); }
-
-  .players-list { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:20px; }
-  .players-list h3 { font-size:0.9rem; font-weight:700; margin-bottom:14px; }
-  .player-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
-  .player-row:last-child { border-bottom:none; }
-  .player-avatar {
-    width:32px; height:32px; border-radius:50%;
-    background: linear-gradient(135deg, var(--blue), var(--cyan));
-    display:flex; align-items:center; justify-content:center;
-    font-size:0.75rem; font-weight:700; flex-shrink:0;
-  }
-  .player-addr { font-family:'Space Mono',monospace; font-size:0.8rem; color:var(--muted); flex:1; }
-  .player-you { font-size:0.7rem; color:var(--cyan); font-weight:700; }
-
-  .join-btn {
-    width:100%; padding:18px;
-    background: linear-gradient(135deg, var(--blue), #0041cc);
-    border:none; border-radius:14px;
-    color:#fff; font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem;
-    cursor:pointer; transition:all 0.2s;
-    box-shadow: var(--glow);
-    letter-spacing:-0.3px;
-  }
-  .join-btn:hover { transform:translateY(-3px); box-shadow:0 0 50px rgba(0,82,255,0.6); }
-  .join-btn:disabled { background:#1e2d45; color:var(--muted); box-shadow:none; cursor:not-allowed; transform:none; }
-
-  /* ---- GAME SCREEN ---- */
-  .game-header {
-    display:flex; align-items:center; justify-content:space-between;
-    margin-bottom:24px;
-  }
-  .q-counter { font-size:0.8rem; color:var(--muted); font-family:'Space Mono',monospace; }
-  .q-counter strong { color:var(--text); font-size:1rem; }
-
-  .timer-wrap { position:relative; }
-  .timer-ring {
-    width:56px; height:56px;
-  }
-  .timer-ring circle {
-    fill:none; stroke-width:4;
-    transform-origin:50% 50%; transform:rotate(-90deg);
-    transition: stroke-dashoffset 1s linear, stroke 0.3s;
-  }
-  .timer-ring .bg-ring { stroke: var(--border); }
-  .timer-ring .prog-ring { stroke: var(--cyan); stroke-linecap:round; }
-  .timer-num {
-    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-    font-family:'Space Mono',monospace; font-weight:700; font-size:1rem;
-  }
-
-  .score-display { font-family:'Space Mono',monospace; }
-  .score-display .s-val { font-size:1.2rem; font-weight:700; color:var(--gold); }
-  .score-display .s-lbl { font-size:0.65rem; color:var(--muted); text-align:right; }
-
-  .progress-bar {
-    height:3px; background:var(--border); border-radius:99px; margin-bottom:28px; overflow:hidden;
-  }
-  .progress-fill {
-    height:100%; background:linear-gradient(90deg, var(--blue), var(--cyan));
-    border-radius:99px; transition:width 0.4s ease;
-  }
-
-  .question-box {
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:18px; padding:28px;
-    margin-bottom:20px;
-  }
-  .q-category { font-size:0.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--cyan); margin-bottom:12px; }
-  .q-text { font-size:1.25rem; font-weight:700; line-height:1.5; letter-spacing:-0.3px; }
-
-  .options-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:24px; }
-  .opt-btn {
-    padding:16px 18px;
-    background:var(--surface); border:1.5px solid var(--border);
-    border-radius:12px; color:var(--text);
-    font-family:'Syne',sans-serif; font-weight:600; font-size:0.9rem;
-    cursor:pointer; transition:all 0.15s; text-align:left;
-    display:flex; align-items:center; gap:12px;
-  }
-  .opt-btn:hover:not(:disabled) { border-color:var(--blue); background:var(--surface2); transform:translateY(-2px); }
-  .opt-btn.selected { border-color:var(--blue); background:rgba(0,82,255,0.15); }
-  .opt-btn.correct { border-color:var(--green)!important; background:rgba(0,230,118,0.15)!important; color:var(--green); }
-  .opt-btn.wrong { border-color:var(--red)!important; background:rgba(255,68,68,0.1)!important; color:var(--red); }
-  .opt-btn:disabled { cursor:default; }
-  .opt-key {
-    width:24px; height:24px; border-radius:6px; flex-shrink:0;
-    background:var(--border); display:flex; align-items:center; justify-content:center;
-    font-size:0.7rem; font-family:'Space Mono',monospace; font-weight:700;
-  }
-
-  .streak-bar {
-    display:flex; align-items:center; gap:8px;
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:12px; padding:12px 16px;
-  }
-  .streak-label { font-size:0.75rem; color:var(--muted); font-weight:600; }
-  .streak-dots { display:flex; gap:6px; flex:1; }
-  .streak-dot {
-    width:10px; height:10px; border-radius:50%;
-    background:var(--border); transition:all 0.3s;
-  }
-  .streak-dot.hit { background:var(--gold); box-shadow:0 0 8px rgba(245,197,66,0.6); }
-  .streak-dot.miss { background:var(--red); }
-  .streak-bonus { font-family:'Space Mono',monospace; font-size:0.8rem; color:var(--gold); font-weight:700; }
-
-  /* ---- RESULTS SCREEN ---- */
-  .results-hero { text-align:center; padding:32px 0 24px; }
-  .results-trophy {
-    font-size:4rem; margin-bottom:16px;
-    animation: bounceIn 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
-  }
-  @keyframes bounceIn { 0%{transform:scale(0)}100%{transform:scale(1)} }
-  .results-hero h2 { font-size:2rem; font-weight:800; margin-bottom:8px; }
-  .results-hero p { color:var(--muted); font-size:0.95rem; }
-
-  .results-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
-  .res-stat {
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:14px; padding:18px; text-align:center;
-  }
-  .res-stat .rv { font-family:'Space Mono',monospace; font-size:1.5rem; font-weight:700; }
-  .res-stat .rl { font-size:0.7rem; color:var(--muted); margin-top:4px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
-
-  .leaderboard { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:20px; }
-  .leaderboard h3 { font-size:0.9rem; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-  .lb-row {
-    display:flex; align-items:center; gap:12px;
-    padding:10px 0; border-bottom:1px solid var(--border);
-    font-size:0.9rem;
-  }
-  .lb-row:last-child { border-bottom:none; }
-  .lb-rank { width:24px; font-family:'Space Mono',monospace; font-weight:700; color:var(--muted); font-size:0.85rem; }
-  .lb-rank.top { color:var(--gold); }
-  .lb-name { flex:1; font-weight:600; }
-  .lb-score { font-family:'Space Mono',monospace; color:var(--cyan); font-size:0.85rem; }
-  .lb-prize { font-family:'Space Mono',monospace; color:var(--gold); font-size:0.85rem; font-weight:700; }
-  .lb-you { background:rgba(0,82,255,0.15); border-radius:8px; padding:10px 12px; border:1px solid rgba(0,82,255,0.3); }
-
-  .action-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  .btn-secondary {
-    padding:16px; background:var(--surface2); border:1px solid var(--border);
-    border-radius:12px; color:var(--text);
-    font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;
-    cursor:pointer; transition:all 0.2s;
-  }
-  .btn-secondary:hover { border-color:var(--blue); }
-  .btn-primary {
-    padding:16px; background:linear-gradient(135deg,var(--blue),#0041cc);
-    border:none; border-radius:12px; color:#fff;
-    font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;
-    cursor:pointer; transition:all 0.2s; box-shadow:var(--glow);
-  }
-  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 0 40px rgba(0,82,255,0.5); }
-
-  /* ---- WALLET MODALS ---- */
-  .modal-overlay {
-    position:fixed; inset:0; z-index:200;
-    background:rgba(0,0,0,0.7);
-    backdrop-filter:blur(8px);
-    display:flex; align-items:flex-end; justify-content:center;
-    opacity:0; pointer-events:none;
-    transition:opacity 0.3s;
-  }
-  .modal-overlay.show { opacity:1; pointer-events:all; }
-
-  .modal-sheet {
-    width:100%; max-width:480px;
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:24px 24px 0 0;
-    padding:28px 24px 40px;
-    transform:translateY(100%);
-    transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  }
-  .modal-overlay.show .modal-sheet { transform:translateY(0); }
-
-  .modal-handle {
-    width:40px; height:4px; border-radius:99px;
-    background:var(--border); margin:0 auto 24px;
-  }
-  .modal-title { font-size:1.3rem; font-weight:800; margin-bottom:6px; letter-spacing:-0.5px; }
-  .modal-sub { font-size:0.85rem; color:var(--muted); margin-bottom:24px; }
-
-  .wallet-option {
-    display:flex; align-items:center; gap:14px;
-    padding:16px; border-radius:14px;
-    border:1.5px solid var(--border);
-    background:var(--surface2);
-    cursor:pointer; transition:all 0.2s;
-    margin-bottom:10px;
-  }
-  .wallet-option:hover { border-color:var(--blue); transform:translateY(-2px); }
-  .wallet-icon {
-    width:44px; height:44px; border-radius:12px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:1.4rem; flex-shrink:0;
-  }
-  .wallet-name { font-weight:700; font-size:0.95rem; }
-  .wallet-desc { font-size:0.75rem; color:var(--muted); margin-top:2px; }
-  .wallet-arrow { margin-left:auto; color:var(--muted); font-size:1.2rem; }
-
-  .modal-divider {
-    display:flex; align-items:center; gap:12px;
-    color:var(--muted); font-size:0.75rem; margin:16px 0;
-  }
-  .modal-divider::before, .modal-divider::after {
-    content:''; flex:1; height:1px; background:var(--border);
-  }
-
-  /* Disconnect modal */
-  .disconnect-info {
-    background:var(--surface2); border:1px solid var(--border);
-    border-radius:14px; padding:16px; margin-bottom:20px;
-    display:flex; align-items:center; gap:12px;
-  }
-  .disconnect-avatar {
-    width:44px; height:44px; border-radius:50%;
-    background:linear-gradient(135deg,var(--blue),var(--cyan));
-    display:flex; align-items:center; justify-content:center;
-    font-size:1.2rem; flex-shrink:0;
-  }
-  .disconnect-addr { font-family:'Space Mono',monospace; font-size:0.85rem; font-weight:700; }
-  .disconnect-bal { font-size:0.75rem; color:var(--muted); margin-top:2px; }
-
-  .disconnect-btn {
-    width:100%; padding:16px;
-    background:rgba(255,68,68,0.15);
-    border:1.5px solid var(--red);
-    border-radius:12px; color:var(--red);
-    font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;
-    cursor:pointer; transition:all 0.2s; margin-bottom:10px;
-  }
-  .disconnect-btn:hover { background:rgba(255,68,68,0.25); }
-
-  .cancel-btn {
-    width:100%; padding:16px;
-    background:var(--surface2); border:1px solid var(--border);
-    border-radius:12px; color:var(--muted);
-    font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;
-    cursor:pointer; transition:all 0.2s;
-  }
-  .cancel-btn:hover { color:var(--text); border-color:var(--blue); }
-
-  /* Connecting state */
-  .connecting-spinner {
-    width:48px; height:48px; border-radius:50%;
-    border:3px solid var(--border);
-    border-top-color:var(--cyan);
-    animation:spin 0.8s linear infinite;
-    margin:0 auto 16px;
-  }
-  @keyframes spin { to{transform:rotate(360deg)} }
-  .connecting-text { text-align:center; color:var(--muted); font-size:0.9rem; }
-  .connecting-name { text-align:center; font-weight:700; font-size:1.1rem; margin-bottom:8px; }
-
-  /* Toast */
-  .toast {
-    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px);
-    background:var(--surface2); border:1px solid var(--border);
-    border-radius:12px; padding:12px 20px;
-    font-size:0.85rem; font-weight:600;
-    transition:transform 0.3s; z-index:100; white-space:nowrap;
-  }
-  .toast.show { transform:translateX(-50%) translateY(0); }
-  .toast.success { border-color:var(--green); color:var(--green); }
-  .toast.error { border-color:var(--red); color:var(--red); }
-
-  @media(max-width:540px){
-    .stats-row,.lobby-grid,.results-grid,.action-row { grid-template-columns:1fr 1fr; }
-    .options-grid { grid-template-columns:1fr; }
-    .results-grid { grid-template-columns:repeat(3,1fr); }
-  }
-</style>
-</head>
-<body>
-<canvas id="bgCanvas"></canvas>
-
-<div class="wrap">
-  <header>
-    <div class="logo">Base<span>IQ</span></div>
-    <button class="wallet-btn" id="walletBtn" onclick="connectWallet()">
-      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><circle cx="17" cy="14" r="1" fill="currentColor"/></svg>
-      Connect Wallet
+  // Options
+  const keys = ['A','B','C','D'];
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = q.opts.map((o,i) => `
+    <button class="opt-btn" onclick="answer(${i})">
+      <span class="opt-key">${keys[i]}</span>${o}
     </button>
-  </header>
+  `).join('');
 
-  <!-- HOME -->
-  <div class="screen active" id="homeScreen">
-    <div class="hero">
-      <div class="hero-badge">⚡ Live on Base Mainnet</div>
-      <h1>Prove Your IQ.<br/><em>Win Real ETH.</em></h1>
-      <p>Answer trivia questions faster and smarter than everyone else. Top players split the prize pool every round.</p>
-    </div>
+  // Streak dots
+  const dots = document.getElementById('streakDots');
+  dots.innerHTML = Array(5).fill(0).map((_,i) => `<div class="streak-dot${i < streak ? ' hit' : ''}"></div>`).join('');
+  document.getElementById('streakBonus').textContent = streak >= 3 ? `+${streak*50}` : '+0';
 
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="val blue" id="totalPrize">4.82</div>
-        <div class="lbl">ETH Paid Out</div>
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(timerInterval);
+  const max = timeLeft;
+  const circumference = 150.8;
+  const ring = document.getElementById('timerRing');
+  const num = document.getElementById('timerNum');
+
+  timerInterval = setInterval(() => {
+    num.textContent = timeLeft;
+    const offset = circumference * (1 - timeLeft / max);
+    ring.style.strokeDashoffset = offset;
+    ring.style.stroke = timeLeft > 10 ? 'var(--cyan)' : timeLeft > 5 ? 'var(--gold)' : 'var(--red)';
+    if (timeLeft <= 0) { clearInterval(timerInterval); answer(-1); }
+    timeLeft--;
+  }, 1000);
+}
+
+function answer(idx) {
+  if (answered) return;
+  answered = true;
+  clearInterval(timerInterval);
+  const q = questions[currentRound][currentQ];
+  const btns = document.querySelectorAll('.opt-btn');
+
+  btns.forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.ans) b.classList.add('correct');
+    else if (i === idx) b.classList.add('wrong');
+  });
+
+  const dots = document.getElementById('streakDots');
+  const allDots = dots.querySelectorAll('.streak-dot');
+
+  if (idx === q.ans) {
+    const pts = 100 + Math.floor(timeLeft * 10) + (streak >= 3 ? streak * 50 : 0);
+    score += pts;
+    streak = Math.min(streak + 1, 5);
+    document.getElementById('scoreVal').textContent = score;
+    if (streak <= 5) allDots[streak-1]?.classList.add('hit');
+    showToast(`+${pts} pts${streak >= 3 ? ' 🔥' : ''}`, 'success');
+  } else {
+    streak = 0;
+    allDots.forEach(d => d.classList.remove('hit'));
+    if (idx !== -1) showToast('Wrong!', 'error');
+    else showToast('Time\'s up!', 'error');
+  }
+  document.getElementById('streakBonus').textContent = streak >= 3 ? `+${streak*50}` : '+0';
+
+  setTimeout(() => { currentQ++; loadQuestion(); }, 1200);
+}
+
+function endGame() {
+  const qs = questions[currentRound];
+  const correct = Math.round(score / 100);
+  const rank = Math.ceil(Math.random() * 3);
+  document.getElementById('resScore').textContent = score;
+  document.getElementById('resCorrect').textContent = `${Math.min(correct,qs.length)}/${qs.length}`;
+  document.getElementById('resRank').textContent = `#${rank}`;
+  document.getElementById('resultsTrophy').textContent = rank === 1 ? '🥇' : rank === 2 ? '🥈' : '🥉';
+  document.getElementById('resultsTitle').textContent = rank === 1 ? 'You Won! 🎉' : 'Round Complete!';
+  document.getElementById('resultsSub').textContent = rank === 1 ? 'Prize incoming to your wallet' : `You placed #${rank}`;
+
+  const prizes = ['0.09 ETH','0.054 ETH','0.027 ETH'];
+  const names = ['You','CryptoAce.eth','BaseWizard','0xShark','TriviaKing'];
+  const rows = document.getElementById('leaderboardRows');
+  rows.innerHTML = [score, score-150, score-320, score-480, score-620]
+    .map((s,i) => `
+      <div class="lb-row${i===0?' lb-you':''}">
+        <div class="lb-rank${i<3?' top':''}">${i===0?'🏆':i+1}</div>
+        <div class="lb-name">${names[i]}${i===0?' (You)':''}</div>
+        <div class="lb-score">${Math.max(s,0)}</div>
+        <div class="lb-prize">${i<3?prizes[i]:''}</div>
       </div>
-      <div class="stat-card">
-        <div class="val gold">1,204</div>
-        <div class="lbl">Players</div>
-      </div>
-      <div class="stat-card">
-        <div class="val green">38</div>
-        <div class="lbl">Rounds Today</div>
-      </div>
-    </div>
+    `).join('');
 
-    <div class="rounds-section">
-      <h2>Live Rounds <span>— Join before they fill</span></h2>
+  showScreen('resultsScreen');
+}
 
-      <div class="round-card" onclick="openLobby('crypto')">
-        <div class="round-info">
-          <div class="title"><span class="live-dot"></span>Crypto Deep Dive</div>
-          <div class="meta">
-            <span>🎯 10 Questions</span>
-            <span>👥 7/10 Players</span>
-            <span>⏱ 20s each</span>
-          </div>
-        </div>
-        <div class="round-right">
-          <div class="prize-pool">0.05 ETH</div>
-          <div class="entry-fee">Entry: 0.005 ETH</div>
-        </div>
-      </div>
+// ─── Modals ──────────────────────────────────────────────
+function showModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
-      <div class="round-card gold-card" onclick="openLobby('mix')">
-        <div class="round-info">
-          <div class="title"><span class="live-dot"></span>⭐ Grand Mix — Featured</div>
-          <div class="meta">
-            <span>🎯 15 Questions</span>
-            <span>👥 5/20 Players</span>
-            <span>⏱ 25s each</span>
-          </div>
-        </div>
-        <div class="round-right">
-          <div class="prize-pool">0.18 ETH</div>
-          <div class="entry-fee">Entry: 0.01 ETH</div>
-        </div>
-      </div>
+// ─── Toast ───────────────────────────────────────────────
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' '+type : '');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
 
-      <div class="round-card" onclick="openLobby('general')">
-        <div class="round-info">
-          <div class="title">General Knowledge Blitz</div>
-          <div class="meta">
-            <span>🎯 10 Questions</span>
-            <span>👥 3/10 Players</span>
-            <span>⏱ 15s each</span>
-          </div>
-        </div>
-        <div class="round-right">
-          <div class="prize-pool">0.08 ETH</div>
-          <div class="entry-fee">Entry: 0.008 ETH</div>
-        </div>
-      </div>
-    </div>
-  </div>
+// ─── Canvas Background ───────────────────────────────────
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
 
-  <!-- LOBBY -->
-  <div class="screen" id="lobbyScreen">
-    <button class="back-btn" onclick="showScreen('homeScreen')">← Back</button>
-    <div class="lobby-header">
-      <div class="lobby-title" id="lobbyTitle">⭐ Grand Mix — Featured</div>
-      <div class
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+for (let i = 0; i < 60; i++) {
+  particles.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    r: Math.random() * 1.5 + 0.3,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: (Math.random() - 0.5) * 0.3,
+    a: Math.random()
+  });
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = canvas.width;
+    if (p.x > canvas.width) p.x = 0;
+    if (p.y < 0) p.y = canvas.height;
+    if (p.y > canvas.height) p.y = 0;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0,180,255,${p.a * 0.4})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
