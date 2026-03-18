@@ -20,16 +20,23 @@
 <meta property="og:url" content="https://baseiq-trivia.vercel.app" />
 <meta property="og:type" content="website" />
 
-<!-- Farcaster Mini App SDK — exact official CDN -->
+<!-- Farcaster Mini App SDK — official package -->
+
+<script src="https://cdn.jsdelivr.net/npm/@farcaster/miniapp-sdk/dist/index.min.js"></script>
 
 <script>
-window.addEventListener('load', function() {
-  try {
-    if (window.miniapp && window.miniapp.sdk && window.miniapp.sdk.actions) {
-      window.miniapp.sdk.actions.ready();
-    }
-  } catch(e) {}
-});
+(function() {
+  function callReady() {
+    try {
+      if (window.miniapp && window.miniapp.sdk) { window.miniapp.sdk.actions.ready(); return; }
+      if (window.sdk && window.sdk.actions) { window.sdk.actions.ready(); return; }
+    } catch(e) {}
+  }
+  document.addEventListener('DOMContentLoaded', callReady);
+  window.addEventListener('load', callReady);
+  setTimeout(callReady, 500);
+  setTimeout(callReady, 1500);
+})();
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
