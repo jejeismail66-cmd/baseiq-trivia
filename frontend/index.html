@@ -20,59 +20,25 @@
 <meta property="og:url" content="https://baseiq-trivia.vercel.app" />
 <meta property="og:type" content="website" />
 
-<!-- Farcaster Mini App SDK — fully inlined postMessage bridge -->
+<!-- Farcaster Mini App SDK — exact official CDN -->
+
+<script src="https://cdn.jsdelivr.net/npm/@farcaster/miniapp-sdk/dist/index.min.js"></script>
 
 <script>
-(function() {
-  // Implements the postMessage protocol Warpcast uses to communicate with mini apps
-  var isReady = false;
-
-  function sendMessage(msg) {
-    try {
-      var str = JSON.stringify(msg);
-      // React Native WebView (Warpcast mobile app)
-      if (window.ReactNativeWebView) {
-        window.ReactNativeWebView.postMessage(str);
-        return;
-      }
-      // Iframe / web fallback
-      if (window.parent && window.parent !== window) {
-        window.parent.postMessage(str, '*');
-        return;
-      }
-      window.postMessage(str, '*');
-    } catch(e) {}
+window.addEventListener('load', function() {
+  try {
+    // Official global is miniapp.sdk (NOT window.sdk)
+    if (window.miniapp && window.miniapp.sdk && window.miniapp.sdk.actions) {
+      window.miniapp.sdk.actions.ready();
+    }
+  } catch(e) {}
+});
+// Also try immediately in case already loaded
+try {
+  if (window.miniapp && window.miniapp.sdk && window.miniapp.sdk.actions) {
+    window.miniapp.sdk.actions.ready();
   }
-
-  function ready() {
-    if (isReady) return;
-    isReady = true;
-    // Official Farcaster ready message format
-    sendMessage({ method: 'ready', params: {} });
-    sendMessage({ type: 'frameReady' });
-    sendMessage({ event: 'ready' });
-    sendMessage({ jsonrpc: '2.0', id: 1, method: 'fc_ready', params: {} });
-  }
-
-  // Expose as window.sdk for any code that calls sdk.actions.ready()
-  window.sdk = {
-    actions: {
-      ready: ready,
-      openUrl: function(url) { sendMessage({ method: 'openUrl', params: { url: url } }); },
-      close: function() { sendMessage({ method: 'close', params: {} }); }
-    },
-    context: {}
-  };
-
-  // Fire ready at every possible point
-  ready();
-  document.addEventListener('DOMContentLoaded', ready);
-  window.addEventListener('load', ready);
-  setTimeout(ready, 100);
-  setTimeout(ready, 500);
-  setTimeout(ready, 1000);
-  setTimeout(ready, 2000);
-})();
+} catch(e) {}
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
