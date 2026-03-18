@@ -109,14 +109,14 @@ background-clip:text;
 .wallet-btn {
 display:flex; align-items:center; gap:8px;
 padding:10px 20px;
-background: linear-gradient(135deg, var(–blue), #0041cc);
+background: linear-gradient(135deg, #0052ff, #0041cc) !important;
 border:none; border-radius:10px;
-color:#fff; font-family:‘Syne’,sans-serif; font-weight:700; font-size:0.85rem;
+color:#fff !important; font-family:‘Syne’,sans-serif; font-weight:700; font-size:0.85rem;
 cursor:pointer; transition:all 0.2s;
-box-shadow: var(–glow);
+box-shadow: 0 0 30px rgba(0,82,255,0.35);
 }
 .wallet-btn:hover { transform:translateY(-2px); box-shadow:0 0 40px rgba(0,82,255,0.5); }
-.wallet-btn.connected { background: rgba(0,230,118,0.15); border:1px solid var(–green); color:var(–green); box-shadow:none; }
+.wallet-btn.connected { background: rgba(0,230,118,0.15) !important; border:1px solid #00e676 !important; color:#00e676 !important; box-shadow:none; }
 
 /* Screen system */
 .screen { display:none; animation: fadeIn 0.4s ease; }
@@ -212,7 +212,7 @@ background:rgba(0,82,255,0.15); border:1px solid rgba(0,82,255,0.3); color:var(�
 
 .lobby-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
 .info-box {
-background:var(–surface); border:1px solid var(–border);
+background:#0d1421 !important; border:1px solid #1e2d45 !important;
 border-radius:14px; padding:20px;
 }
 .info-box .ib-label { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(–muted); margin-bottom:8px; }
@@ -235,15 +235,15 @@ font-size:0.75rem; font-weight:700; flex-shrink:0;
 
 .join-btn {
 width:100%; padding:18px;
-background: linear-gradient(135deg, var(–blue), #0041cc);
+background: linear-gradient(135deg, #0052ff, #0041cc) !important;
 border:none; border-radius:14px;
-color:#fff; font-family:‘Syne’,sans-serif; font-weight:800; font-size:1.1rem;
+color:#fff !important; font-family:‘Syne’,sans-serif; font-weight:800; font-size:1.1rem;
 cursor:pointer; transition:all 0.2s;
-box-shadow: var(–glow);
+box-shadow: 0 0 30px rgba(0,82,255,0.35);
 letter-spacing:-0.3px;
 }
 .join-btn:hover { transform:translateY(-3px); box-shadow:0 0 50px rgba(0,82,255,0.6); }
-.join-btn:disabled { background:#1e2d45; color:var(–muted); box-shadow:none; cursor:not-allowed; transform:none; }
+.join-btn:disabled { background:#1e2d45 !important; color:#5a7090 !important; box-shadow:none; cursor:not-allowed; transform:none; }
 
 /* –– GAME SCREEN –– */
 .game-header {
